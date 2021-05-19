@@ -1,0 +1,75 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="5/18/2021 11:13:38 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="ML-RefVm-765087"
+  DTS:CreatorName="ML-RefVm-765087\imt577user"
+  DTS:DTSID="{AD9AE941-7140-41F7-8FFC-D569BB8B92D8}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="15.0.2000.157"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="Package"
+  DTS:PackageType="5"
+  DTS:VersionBuild="7"
+  DTS:VersionGUID="{9955AFDC-D5C4-4988-A8FC-1A6512A2E418}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[ML-RefVm-765087.DestinationSystem.sa]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{8AE4C0A9-DE7D-4438-8264-A078AAE862D7}"
+      DTS:ObjectName="ML-RefVm-765087.DestinationSystem.sa">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=ML-RefVm-765087;User ID=sa;Initial Catalog=DestinationSystem;Provider=SQLNCLI11.1;Persist Security Info=True;Auto Translate=False;">
+          <DTS:Password
+            DTS:Name="Password"
+            Sensitive="1"
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAwYc9cag84EmDEg74nYz3VgAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAADWjGI3xn+RiwTi44ayHEjj811YrFwqIHHCk0dZGHBwAAAAAAAOgAAAAAIAACAAAADN3D5AfWvER0B84X2d6oR2g8uovPog4L/nmqVXYyo/jzAAAADmYxOKwooejDfFvVm4wocA7miv9tvyzgySEcidTI6V3bYchg/DHEIqgYnceFFbS0tAAAAAD4tNUbqkvqv9G8p+kT5YUgRmv0dEvDN5p0iQAO/0qc1HQZYwXTmZiSV1YipPRUK+T6qNrFtXwH/PGL8IQfkBpg</DTS:Password>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\factSRCSalesTarget"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{A271C5B6-CB74-4589-9A4B-9DF30D4D47C8}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="factSRCSalesTarget"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{8AE4C0A9-DE7D-4438-8264-A078AAE862D7}"
+          SQLTask:SqlStatementSource="IF EXISTS (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'factSRCSalesTarget')&#xA;BEGIN&#xA;&#x9;DELETE FROM dbo.factSRCSalesTarget;&#xA;END&#xA;GO&#xA;&#xA;&#xA;&#xA;IF NOT EXISTS (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'factSRCSalesTarget')&#xA;BEGIN&#xA;&#x9;CREATE TABLE dbo.factSRCSalesTarget&#xA;&#x9;(&#xA;&#x9;factSalesTarget INT IDENTITY(1,1) CONSTRAINT PK_factSRCSalesTarget PRIMARY KEY CLUSTERED NOT NULL, -- SurrogateKey&#xA;    dimStoreKey INT NOT NULL CONSTRAINT FK_factSRCSalesTarget_dimStore FOREIGN KEY REFERENCES dbo.dimStore (dimStoreKey),&#x9;&#xA;    dimResellerKey INT NOT NULL CONSTRAINT FK_factSRCSalesTarget_dimReseller FOREIGN KEY REFERENCES dbo.dimReseller (dimResellerKey),&#xA;&#x9;dimChannelID INT NOT NULL CONSTRAINT FK_factSRCSalesTarget_dimChannel FOREIGN KEY REFERENCES dbo.dimChannel (dimChannelID),&#xA;&#x9;dimTargetDateKey INT NOT NULL CONSTRAINT FK_factSRCSalesTarget_DimDate FOREIGN KEY REFERENCES dbo.DimDate (DimDateID),&#xA;&#x9;dimTargetSalesAmount numeric(16,6) NOT NULL&#xA;&#x9;);&#xA;END&#xA;GO&#xA;&#xA;IF EXISTS (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'factSRCSalesTarget')&#xA;BEGIN&#xA;&#x9;-- ====================================&#xA;&#x9;-- Load factSRCSalesTarget table&#xA;&#x9;-- ====================================&#xA;&#xA;&#x9;INSERT INTO dbo.factSRCSalesTarget&#xA;&#x9;(&#xA;    dimStoreKey&#xA;    ,dimResellerKey&#xA;    ,dimChannelID&#xA;    ,dimTargetDateKey&#xA;    ,dimTargetSalesAmount&#xA;&#x9;)&#xA;&#x9;SELECT &#xA;&#x9;dimStore.dimStoreKey&#xA;&#x9;,dimReseller.dimResellerKey&#xA;&#x9;,dimChannel.dimChannelID&#xA;&#x9;,DimDate.DimDateID AS dimTargetDateKey&#xA;    ,CAST(StageTargetCRS.TargetSalesAmount AS int)/365.0 AS dimTargetSalesAmount&#xA;&#xA;&#x9;FROM dbo.StageTargetCRS StageTargetCRS, &#xA;    dbo.dimChannel dimChannel, &#xA;    dbo.dimReseller dimReseller,&#xA;    dbo.DimDate DimDate,&#xA;    dbo.dimStore dimStore&#xA;    -- (SELECT concat(&quot;Store Number &quot;,dimStoreNumber) AS StoreName, dimStoreKey FROM dbo.dimStore) AS store&#xA;    WHERE StageTargetCRS.ChannelName = dimChannel.dimChannelName &#xA;    AND StageTargetCRS.TargetName = dimReseller.dimResellerName &#xA;    AND StageTargetCRS.TargetName = &quot;Store Number &quot; + dimStore.dimStoreNumber&#xA;    AND StageTargetCRS.Year = DimDate.CalendarYear;&#xA;    &#xA;END&#xA;GO &#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph">
+        <NodeLayout
+          Size="177.333333333334,42.6666666666667"
+          Id="Package\factSRCSalesTarget"
+          TopLeft="42.4999993667007,32.8421058813291" />
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
