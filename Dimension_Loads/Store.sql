@@ -37,19 +37,24 @@ BEGIN
 	SELECT 
 	Location.dimLocationKey AS dimLocationKey
 	,Store.StoreID AS dimSourceStoreID
-	,Store.dimStoreName
+	,CAST(concat("Store Number"," ",Store.dimStoreNumber) AS nvarchar(255)) AS dimStoreName
 	,Store.StoreNumber AS dimStoreNumber
 	,Store.StoreManager AS dimStoreManager
 
-	FROM (
-		select Store1.StoreID, 
-		Store1.StoreManager,
-		cast(Prefix.column1+' '+Prefix.column2 AS nvarchar(255)) + ' '+ cast(Store1.StoreNumber AS nvarchar(255)) AS dimStoreName, 
-		Store1.StoreNumber, 
-		Store1.Address
-		from dbo.StageStore Store1, dbo.Prefix Prefix) Store
+	FROM dbo.StageStore Store
 	INNER JOIN dbo.dimLocation Location
-	ON Store.Address = Location.dimAddress;
+	ON Store.Address = Location.dimAddress or Store.PostalCode = Location.dimPostalCode;
+
+	-- FROM (
+	-- 	select Store1.StoreID, 
+	-- 	Store1.StoreManager,
+	-- 	cast(Prefix.column1+' '+Prefix.column2 AS nvarchar(255)) + ' '+ cast(Store1.StoreNumber AS nvarchar(255)) AS dimStoreName, 
+	-- 	Store1.StoreNumber, 
+	-- 	Store1.Address
+	-- 	from dbo.StageStore Store1, dbo.Prefix Prefix) Store
+	-- INNER JOIN dbo.dimLocation Location
+	-- ON Store.Address = Location.dimAddress
+
 END
 GO 
 

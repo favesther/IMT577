@@ -16,8 +16,8 @@ BEGIN
     dimResellerKey INT NOT NULL CONSTRAINT FK_factSalesActual_dimResellerKey FOREIGN KEY REFERENCES dbo.dimReseller (dimResellerKey),
     dimCustomerID INT NOT NULL CONSTRAINT FK_factSalesActual_dimCustomerID FOREIGN KEY REFERENCES dbo.dimCustomer (dimCustomerID),
     dimChannelID INT NOT NULL CONSTRAINT FK_factSalesActual_dimChannelID FOREIGN KEY REFERENCES dbo.dimChannel (dimChannelID),
-    dimSalesDateKey INT NOT NULL CONSTRAINT FK_factSalesActual_DimDate_DimDateID FOREIGN KEY REFERENCES dbo.DimDate (dimDateID),
-    dimLocationKey INT NOT NULL CONSTRAINT FK_factSalesActual_dimLocationKey_dimLocationKey FOREIGN KEY REFERENCES dbo.dimLocation (dimLocationKey),
+    dimSalesDateKey INT NOT NULL CONSTRAINT FK_factSalesActual_DimDateID FOREIGN KEY REFERENCES dbo.DimDate (dimDateID),
+    dimLocationKey INT NOT NULL CONSTRAINT FK_factSalesActual_dimLocationKey FOREIGN KEY REFERENCES dbo.dimLocation (dimLocationKey),
     dimSourceSalesHeaderID INT NOT NULL, --Natural Key
     dimSourceSalesDetailID INT NOT NULL, --Natural Key
     dimSalesAmount numeric(18,2) NOT NULL,
@@ -66,8 +66,11 @@ BEGIN
     sd.SalesAmount/sd.SalesQuantity AS dimSalesUnitPrice, 
     p.dimProductCost AS SalesExtendedCost,
     sd.SalesAmount-sd.SalesQuantity*p.dimProductCost as dimSalesTotalProfit
-    FROM dbo.StageSalesDetail sd
-    join dbo.StageSalesHeader sh on sh.SalesHeaderID = sd.SalesHeaderID
+    FROM (
+        select *
+        from dbo.StageSalesDetail sd
+        INNER JOIN dbo.StageSalesHeader sh 
+        on sh.SalesHeaderID = sd.SalesHeaderID) Sales,
     join dbo.dimProduct p on p.dimSourceProductID =sd.ProductID
     left join dbo.dimStore s on s.dimSourceStoreID =sh.StoreID
     left join dbo.dimReseller r on r.dimSourceResellerID=sh.ResellerID
