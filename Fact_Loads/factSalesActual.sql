@@ -11,10 +11,10 @@ BEGIN
 	CREATE TABLE dbo.factSalesActual	
     (
     factSalesActualKey INT IDENTITY(1,1) NOT NULL CONSTRAINT factSalesActualKey PRIMARY KEY,
-    dimProductKey INT NOT NULL CONSTRAINT FK_factSalesActual_dimProductKey FOREIGN KEY REFERENCES dbo.dimProduct (dimProductKey),
+    dimProductID INT NOT NULL CONSTRAINT FK_factSalesActual_dimProductID FOREIGN KEY REFERENCES dbo.dimProduct (dimProductID),
     dimStoreKey INT NOT NULL CONSTRAINT FK_factSalesActual_dimStoreKey  FOREIGN KEY REFERENCES dbo.dimStore (dimStoreKey),
     dimResellerKey INT NOT NULL CONSTRAINT FK_factSalesActual_dimResellerKey FOREIGN KEY REFERENCES dbo.dimReseller (dimResellerKey),
-    dimCustomerKey INT NOT NULL CONSTRAINT FK_factSalesActual_dimCustomerKey FOREIGN KEY REFERENCES dbo.dimCustomer (dimCustomerKey),
+    dimCustomerID INT NOT NULL CONSTRAINT FK_factSalesActual_dimCustomerID FOREIGN KEY REFERENCES dbo.dimCustomer (dimCustomerID),
     dimChannelID INT NOT NULL CONSTRAINT FK_factSalesActual_dimChannelID FOREIGN KEY REFERENCES dbo.dimChannel (dimChannelID),
     dimSalesDateKey INT NOT NULL CONSTRAINT FK_factSalesActual_DimDate_DimDateID FOREIGN KEY REFERENCES dbo.DimDate (dimDateID),
     dimLocationKey INT NOT NULL CONSTRAINT FK_factSalesActual_dimLocationKey_dimLocationKey FOREIGN KEY REFERENCES dbo.dimLocation (dimLocationKey),
@@ -37,10 +37,10 @@ BEGIN
 
 	INSERT INTO dbo.factSalesActual
 	(
-    dimProductKey
+    dimProductID
     ,dimStoreKey
     ,dimResellerKey
-    ,dimCustomerKey
+    ,dimCustomerID
     ,dimChannelID
     ,dimSalesDateKey
     ,dimLocationKey
@@ -52,10 +52,10 @@ BEGIN
     ,dimSalesExtendedCost
     ,dimSalesTotalProfit
 	)
-    SELECT p.dimProductKey, 
+    SELECT p.dimProductID, 
     ISNULL(s.dimStoreKey,-1), 
     ISNULL(r.dimResellerKey,-1),
-    ISNULL(c.dimCustomerKey,-1), 
+    ISNULL(c.dimCustomerID,-1), 
     ch.dimChannelID,
     d.DimDateID as dimSalesDateKey,
     l.dimLocationKey, 
@@ -87,10 +87,10 @@ SET IDENTITY_INSERT dbo.factSalesActual ON;
 INSERT INTO dbo.factSalesActual
 (
 factSalesActualKey
-,dimProductKey
+,dimProductID
 ,dimStoreKey
 ,dimResellerKey
-,dimCustomerKey
+,dimCustomerID
 ,dimChannelID
 ,dimSalesDateKey
 ,dimLocationKey

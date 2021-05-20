@@ -27,19 +27,23 @@ BEGIN
 
 	INSERT INTO dbo.factSRCSalesTarget
 	(
-	dimChannelID
+	dimChannelID,
 	dimSRCname,
 	dimTargetDateKey,
 	SalesTargetSalesAmount
 	)
 
-	SELECT CRS.TargetName,CRS.dimChannelID DimDate.DimDateID, CAST(CRS.TargetSalesAmount AS int)/365.0
+	SELECT CRS.dimChannelID ,
+	CRS.TargetName as dimSRCname,
+	DimDate.DimDateID as dimTargetDateKey, 
+	CAST(CRS.TargetSalesAmount AS int)/365.0 as SalesTargetSalesAmount
 	FROM (
-		select StageTargetCRS.*, Channel.dimChannelID
-		from dbo.StageTargetCRS StageTargetCRS
-		left join dbo.dimChannel Channel
-		on StageTargetCRS.ChannelName = Channel.dimChannelName) CRS, dbo.DimDate DimDate
-	WHERE CRS.Year = DimDate.CalendarYear
+		select *
+		from dbo.StageTargetCRS StageTargetCRS,dbo.dimChannel Channel
+		where StageTargetCRS.ChannelName = Channel.dimChannelName) CRS, dbo.DimDate DimDate
+	WHERE CRS.Year = DimDate.CalendarYear    
+END
+GO 
 
 	-- FROM StageTargetCRS
     -- INNER JOIN dbo.dimChannel as dimChannel
@@ -50,6 +54,3 @@ BEGIN
     -- on StageTargetCRS.Year = DimDate.CalendarYear
     -- INNER JOIN dbo.dimStore as dimStore 
     -- on StageTargetCRS.TargetName = dimStore.dimStoreName;
-    
-END
-GO 
