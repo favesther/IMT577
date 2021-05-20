@@ -42,7 +42,7 @@ BEGIN
 	,Store.StoreManager AS dimStoreManager
 
 	FROM (
-		select cast(Prefix.column1+Prefix.column2 AS nvarchar(255)) + cast(Store1.StoreNumber AS nvarchar(255)) AS dimStoreName 
+		select cast(Prefix.column1+' '+Prefix.column2 AS nvarchar(255)) + cast(' '+Store1.StoreNumber AS nvarchar(255)) AS dimStoreName 
 		from dbo.StageStore Store1, dbo.Prefix Prefix) Storename, dbo.StageStore Store
 	INNER JOIN dbo.dimLocation Location
 	ON Store.Address = Location.dimAddress;
