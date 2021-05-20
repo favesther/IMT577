@@ -31,11 +31,17 @@ BEGIN
     ,dimTargetDateKey
     ,ProductTargetSalesAmount
 	)
-	SELECT p.dimProductID
+	SELECT PT.dimProductID
     , d.DimDateID as dimTargetDateKey
-    ,CAST(pt.SalesQuantityTarget AS int)/365.0 as ProductTargetSalesAmount
-    FROM dbo.StageTargetProduct pt, dbo.dimProduct p, dbo.DimDate d
-    WHERE pt.Year = d.CalendarYear and pt.ProductID = p.dimProductID
+    ,CAST(PT.SalesQuantityTarget AS int)/365.0 as ProductTargetSalesAmount
+    FROM 
+	(
+		select pt.*, p.dimProductID
+		from dbo.StageTargetProduct pt, dbo.dimProduct p
+		where pt.ProductID = p.dimSourceProductID
+	) PT, dbo.DimDate d
+    WHERE PT.Year = d.CalendarYear
 END
 GO 
+
 
