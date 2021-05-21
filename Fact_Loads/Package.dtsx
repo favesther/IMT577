@@ -11,8 +11,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="Package"
   DTS:PackageType="5"
-  DTS:VersionBuild="25"
-  DTS:VersionGUID="{8434D385-7756-41A5-8EC1-9A57F7A7DF30}">
+  DTS:VersionBuild="26"
+  DTS:VersionGUID="{3016F296-8900-4B5C-8823-8C6FFA523B62}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -27,7 +27,7 @@
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAwYc9cag84EmDEg74nYz3VgAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAAxvf9y0KtqR3Kn70NV6PMjo6pJrKt9/B6c/5m6xPaioAAAAAAOgAAAAAIAACAAAACGGZYO9HBuvjYbH2M2Ss90YWxOH8N5/hxYH1lUpxMDvDAAAABJ/OKpJrcxlD6L4mrfyfsaFnJpWxIha73wgq7ZuogIs53QH0O/2bs7uTpQJ0nidjxAAAAAsOhp60TVq3MBkHcSiG5PZt1e0ywpd/Rr6v4QpwwE+ecDVf8JXN3mj+AD/rEzpShIJ74uDEFltHoKhSr8827xgQ</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAwYc9cag84EmDEg74nYz3VgAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAAfMx3HcEuH/WtfTgUWwc6WItpIBUkE6amNh7B3yyz78QAAAAAOgAAAAAIAACAAAAAzipCuJcnSRC4I9LZUyQ2HL8YAwz7l973ZWWhsrBdngDAAAACy4813BPIAvnbGuFtELFkv6OvmmUYX+C+7j3jIO1BZQYp4DhPKNVav+gj1wketPIdAAAAAEJnoefEbdkN3NAqb/E+VSdbcmc1mifCBI3lm/YBRuaS1jY6aATEUdyWJ2RErpcOqyZ/tTsk+gFUhF53PWdTzCA</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -43,7 +43,7 @@
       DTS:LocaleID="-1"
       DTS:ObjectName="Create factProductSalesTarget"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="2">
+      DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
@@ -60,7 +60,7 @@
       DTS:LocaleID="-1"
       DTS:ObjectName="Create factSalesActual"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="0">
+      DTS:ThreadHint="1">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
@@ -77,7 +77,7 @@
       DTS:LocaleID="-1"
       DTS:ObjectName="Create factSRCSalesTarget"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="1">
+      DTS:ThreadHint="2">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
@@ -94,7 +94,7 @@
       DTS:LocaleID="-1"
       DTS:ObjectName="Delete factProductSalesTarget"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="2">
+      DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
@@ -111,7 +111,7 @@
       DTS:LocaleID="-1"
       DTS:ObjectName="Delete factSalesActual"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="0">
+      DTS:ThreadHint="1">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
@@ -128,7 +128,7 @@
       DTS:LocaleID="-1"
       DTS:ObjectName="Delete factSRCSalesTarget"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="1">
+      DTS:ThreadHint="2">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
@@ -145,12 +145,12 @@
       DTS:LocaleID="-1"
       DTS:ObjectName="load factProductSalesTarget"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="2">
+      DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{8AE4C0A9-DE7D-4438-8264-A078AAE862D7}"
-          SQLTask:SqlStatementSource="IF EXISTS (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'factProductSalesTarget')&#xA;BEGIN&#xA;&#x9;-- ====================================&#xA;&#x9;-- Load factProductSalesTarget table&#xA;&#x9;-- ====================================&#xA;&#xA;&#x9;INSERT INTO dbo.factProductSalesTarget&#xA;&#x9;(&#xA;    dimProductID&#xA;    ,dimTargetDateKey&#xA;    ,ProductTargetSalesAmount&#xA;&#x9;)&#xA;&#x9;SELECT p.dimProductID&#xA;    , d.DimDateID as dimTargetDateKey&#xA;    ,CAST(pt.SalesQuantityTarget AS int)/365.0 as ProductTargetSalesAmount&#xA;    FROM dbo.StageTargetProduct pt, dbo.dimProduct p, dbo.DimDate d&#xA;    WHERE pt.Year = d.CalendarYear and pt.ProductID = p.dimProductID&#xA;END&#xA;GO " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="IF EXISTS (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'factProductSalesTarget')&#xA;BEGIN&#xA;&#x9;-- ====================================&#xA;&#x9;-- Load factProductSalesTarget table&#xA;&#x9;-- ====================================&#xA;&#xA;&#x9;INSERT INTO dbo.factProductSalesTarget&#xA;&#x9;(&#xA;    dimProductID&#xA;    ,dimTargetDateKey&#xA;    ,ProductTargetSalesAmount&#xA;&#x9;)&#xA;&#x9;SELECT PT.dimProductID&#xA;    , d.DimDateID as dimTargetDateKey&#xA;    ,CAST(PT.SalesQuantityTarget AS int)/365.0 as ProductTargetSalesAmount&#xA;    FROM &#xA;&#x9;(&#xA;&#x9;&#x9;select pt.*, p.dimProductID&#xA;&#x9;&#x9;from dbo.StageTargetProduct pt, dbo.dimProduct p&#xA;&#x9;&#x9;where pt.ProductID = p.dimSourceProductID&#xA;&#x9;) PT, dbo.DimDate d&#xA;    WHERE PT.Year = d.CalendarYear&#xA;END&#xA;GO " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
@@ -162,12 +162,12 @@
       DTS:LocaleID="-1"
       DTS:ObjectName="Load factSalesActual"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="0">
+      DTS:ThreadHint="1">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{8AE4C0A9-DE7D-4438-8264-A078AAE862D7}"
-          SQLTask:SqlStatementSource="IF EXISTS (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'factSalesActual')&#xA;BEGIN&#xA;&#x9;-- ====================================&#xA;&#x9;-- Load factSalesActual table&#xA;&#x9;-- ====================================&#xA;&#xA;&#x9;INSERT INTO dbo.factSalesActual&#xA;&#x9;(&#xA;    dimProductID&#xA;    ,dimStoreKey&#xA;    ,dimResellerKey&#xA;    ,dimCustomerID&#xA;    ,dimChannelID&#xA;    ,dimSalesDateKey&#xA;    ,dimLocationKey&#xA;    ,dimSourceSalesHeaderID&#xA;    ,dimSourceSalesDetailID&#xA;    ,dimSalesAmount&#xA;    ,dimSalesQuantity&#xA;    ,dimSalesUnitPrice&#xA;    ,dimSalesExtendedCost&#xA;    ,dimSalesTotalProfit&#xA;&#x9;)&#xA;    SELECT p.dimProductID, &#xA;    ISNULL(s.dimStoreKey,-1), &#xA;    ISNULL(r.dimResellerKey,-1),&#xA;    ISNULL(c.dimCustomerID,-1), &#xA;    ch.dimChannelID,&#xA;    d.DimDateID as dimSalesDateKey,&#xA;    l.dimLocationKey, &#xA;    sh.SalesHeaderID AS dimSourceSalesHeaderID, &#xA;    sd.SalesDetailID AS dimSourceSalesDetailID,&#xA;    sd.SalesAmount AS dimSalesAmount, &#xA;    sd.SalesQuantity AS dimSalesQuantity, &#xA;    sd.SalesAmount/sd.SalesQuantity AS dimSalesUnitPrice, &#xA;    p.dimProductCost AS SalesExtendedCost,&#xA;    sd.SalesAmount-sd.SalesQuantity*p.dimProductCost as dimSalesTotalProfit&#xA;    FROM dbo.StageSalesDetail sd&#xA;    join dbo.StageSalesHeader sh on sh.SalesHeaderID = sd.SalesHeaderID&#xA;    join dbo.dimProduct p on p.dimSourceProductID =sd.ProductID&#xA;    left join dbo.dimStore s on s.dimSourceStoreID =sh.StoreID&#xA;    left join dbo.dimReseller r on r.dimSourceResellerID=sh.ResellerID&#xA;    left join dbo.dimCustomer c on c.dimSourceCustomerID=sh.CustomerID&#xA;    join dbo.dimChannel ch on ch.dimSourceChannelID=sh.ChannelID&#xA;    left join dbo.DimDate d on d.FullDate=sh.Date&#xA;    join dbo.dimLocation l on l.dimLocationKey=r.dimLocationKey OR l.dimLocationKey=c.dimLocationKey OR l.dimLocationKey=s.dimLocationKey;&#xA;END&#xA;GO " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="&#xA;IF EXISTS (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'factSalesActual')&#xA;BEGIN&#xA;&#x9;-- ====================================&#xA;&#x9;-- Load factSalesActual table&#xA;&#x9;-- ====================================&#xA;&#xA;&#x9;INSERT INTO dbo.factSalesActual&#xA;&#x9;(&#xA;    dimProductID&#xA;    ,dimStoreKey&#xA;    ,dimResellerKey&#xA;    ,dimCustomerID&#xA;    ,dimChannelID&#xA;    ,dimSalesDateKey&#xA;    ,dimLocationKey&#xA;    ,dimSourceSalesHeaderID&#xA;    ,dimSourceSalesDetailID&#xA;    ,dimSalesAmount&#xA;    ,dimSalesQuantity&#xA;    ,dimSalesUnitPrice&#xA;    ,dimSalesExtendedCost&#xA;    ,dimSalesTotalProfit)&#xA;&#xA;&#xA;    SELECT &#xA;    ISNULL(dbo.dimProduct.dimProductID, -1)&#xA;    ,ISNULL(dbo.dimStore.dimStoreKey, -1)&#xA;    ,ISNULL(dbo.dimReseller.dimResellerKey, -1)&#xA;    ,ISNULL(dbo.dimCustomer.dimCustomerID, -1)&#xA;    ,ISNULL(dbo.dimChannel.dimChannelID, -1)&#xA;    ,dbo.dimDate.DimDateID AS dimSalesDateKey&#xA;    ,dbo.dimLocation.dimLocationKey&#xA;    ,dbo.StageSalesDetail.SalesHeaderID AS dimSourceSalesHeaderID&#xA;    ,dbo.StageSalesDetail.SalesDetailID AS dimSourceSalesDetailID&#xA;    ,dbo.StageSalesDetail.SalesAmount&#xA;    ,dbo.StageSalesDetail.SalesQuantity&#xA;    ,dbo.StageSalesDetail.SalesAmount/dbo.StageSalesDetail.SalesQuantity AS dimSalesUnitPrice&#xA;    ,dbo.dimProduct.dimProductCost * dbo.StageSalesDetail.SalesQuantity AS dimSalesExtendedCost&#xA;    ,dbo.StageSalesDetail.SalesAmount - dbo.dimProduct.dimProductCost * dbo.StageSalesDetail.SalesQuantity AS dimSalesTotalProfit&#xA;&#xA;    FROM StageSalesHeader&#xA;    LEFT JOIN StageSalesDetail ON&#xA;    dbo.StageSalesDetail.SalesHeaderID = dbo.StageSalesHeader.SalesHeaderID&#xA;    LEFT JOIN dimProduct ON&#xA;    dbo.dimProduct.dimProductID = dbo.StageSalesDetail.ProductID &#xA;    LEFT JOIN dimChannel ON&#xA;    dbo.dimChannel.dimChannelID = dbo.StageSalesHeader.ChannelID&#xA;    LEFT JOIN dimReseller ON&#xA;    dbo.dimReseller.dimSourceResellerID = dbo.StageSalesHeader.ResellerID&#xA;    LEFT JOIN dimCustomer ON&#xA;    dbo.dimCustomer.dimSourceCustomerID = dbo.StageSalesHeader.CustomerID&#xA;    LEFT JOIN dimStore ON&#xA;    dbo.dimStore.dimSourceStoreID = dbo.StageSalesHeader.StoreID&#xA;    LEFT JOIN dimDate ON&#xA;    dbo.dimDate.FullDate = dbo.StageSalesHeader.Date&#xA;    LEFT JOIN dimLocation&#xA;    on dbo.dimLocation.dimLocationKey=dbo.dimReseller.dimLocationKey &#xA;    OR dbo.dimLocation.dimLocationKey=dbo.dimCustomer.dimLocationKey &#xA;    OR dbo.dimLocation.dimLocationKey=dbo.dimStore.dimLocationKey&#xA;&#xA;    -- select Detail.dimProductID, Header.dimStoreKey, Header.dimResellerKey, Header.dimCustomerID, &#xA;    -- Header.dimChannelID, Header.dimDateID AS dimSalesDateKey, Header.dimLocationKey, &#xA;    -- Header.SalesHeaderID AS dimSourceSalesHeaderID, Detail.SalesDetailID AS dimSourceSalesDetailID, &#xA;    -- Detail.SalesAmount, Detail.SalesQuantity, Detail.SalesAmount/Detail.SalesQuantity AS dimSalesUnitPrice, &#xA;    -- Detail.dimSalesExtendedCost, Detail.dimSalesTotalProfit&#xA;    &#xA;    -- from (&#xA;    --         select sd.SalesDetailID, sd.SalesHeaderID, P.dimProductID, sd.SalesQuantity, sd.SalesAmount,&#xA;    --         p.dimProductCost,&#xA;    --         sd.SalesAmount-sd.SalesQuantity*p.ProductCost AS dimSalesTotalProfit&#xA;    --         from dbo.StageSalesDetail sd&#xA;    --         left join dbo.dimProduct P&#xA;    --         on sd.ProductID = P.dimSourceProductID&#xA;    --     ) Detail, &#xA;    --     (&#xA;    --         select H.*, c.dimChannelID, s.dimStoreKey, Customer.dimCustomerID, r.dimResellerKey, d.dimDateID&#xA;    --         from dbo.StageSalesHeader H&#xA;    --         left join dbo.dimChannel c&#xA;    --         on c.dimSourceChannelID = H.ChannelID  &#xA;    --         left join dbo.dimStore s&#xA;    --         on s.dimSourceStoreID = H.StoreID&#xA;    --         left join dbo.dimCustomer Customer&#xA;    --         on Customer.dimSourceCustomerID = H.CustomerID&#xA;    --         left join dbo.Reseller r&#xA;    --         on r.dimSourceResellerID = r.ResellerID&#xA;    --         left join dbo.DimDate d&#xA;    --         on d.FullDate = H.Date&#xA;    --         join dbo.dimLocation l &#xA;    --         on l.dimLocationKey=r.dimLocationKey OR l.dimLocationKey=Customer.dimLocationKey OR l.dimLocationKey=s.dimLocationKey&#xA;    --     ) Header&#xA;    -- where Detail.SalesHeaderID = Header.SalesHeaderID&#xA;&#xA;END&#xA;GO &#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
@@ -179,12 +179,12 @@
       DTS:LocaleID="-1"
       DTS:ObjectName="Load factSRCSalesTarget"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="1">
+      DTS:ThreadHint="2">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{8AE4C0A9-DE7D-4438-8264-A078AAE862D7}"
-          SQLTask:SqlStatementSource="IF EXISTS (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'factSRCSalesTarget')&#xA;BEGIN&#xA;&#x9;-- ====================================&#xA;&#x9;-- Load factSRCSalesTarget table&#xA;&#x9;-- ====================================&#xA;&#xA;&#x9;INSERT INTO dbo.factSRCSalesTarget&#xA;&#x9;(&#xA;&#x9;dimChannelID,&#xA;&#x9;dimSRCname,&#xA;&#x9;dimTargetDateKey,&#xA;&#x9;SalesTargetSalesAmount&#xA;&#x9;)&#xA;&#xA;&#x9;SELECT CRS.dimChannelID ,&#xA;&#x9;CRS.TargetName as dimSRCname,&#xA;&#x9;DimDate.DimDateID as dimTargetDateKey, &#xA;&#x9;CAST(CRS.TargetSalesAmount AS int)/365.0 as SalesTargetSalesAmount&#xA;&#x9;FROM (&#xA;&#x9;&#x9;select *&#xA;&#x9;&#x9;from dbo.StageTargetCRS StageTargetCRS,dbo.dimChannel Channel&#xA;&#x9;&#x9;where StageTargetCRS.ChannelName = Channel.dimChannelName) CRS, dbo.DimDate DimDate&#xA;&#x9;WHERE CRS.Year = DimDate.CalendarYear    &#xA;END&#xA;GO " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="IF EXISTS (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'factSRCSalesTarget')&#xA;BEGIN&#xA;&#x9;-- ====================================&#xA;&#x9;-- Load factSRCSalesTarget table&#xA;&#x9;-- ====================================&#xA;&#xA;&#x9;INSERT INTO dbo.factSRCSalesTarget&#xA;&#x9;(&#xA;&#x9;dimStoreKey&#xA;&#x9;dimResellerKey&#xA;&#x9;dimChannelID&#xA;&#x9;dimTargetDateKey&#xA;&#x9;SalesTargetSalesAmount&#xA;&#x9;)&#xA;&#xA;&#x9;SELECT s.dimStoreKey, r.dimResellerKey, c.dimChannelID, DimDate.DimDateID as dimTargetDateKey, &#xA;&#x9;CAST(CRS.TargetSalesAmount AS int)/365.0 as SalesTargetSalesAmount&#xA;&#x9;FROM dbo.StageTargetCRS AS CRS&#xA;&#x9;left join dbo.dimChannel c&#xA;&#x9;on pt.TargetName = c.dimChannelName&#xA;&#x9;left join dbo.dimStore s&#xA;&#x9;on pt.TargetName = s.dimStoreName&#xA;&#x9;left join dbo.dimReseller r&#xA;&#x9;on pt.TargetName = r.dimResellerName&#xA;&#x9;left join dbo.DimDate DimDate&#xA;&#x9;on CRS.Year = DimDate.CalendarYear    &#xA;END&#xA;GO " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
@@ -196,7 +196,7 @@
       DTS:LocaleID="-1"
       DTS:ObjectName="Unknown Elements"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="0">
+      DTS:ThreadHint="1">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
@@ -311,6 +311,10 @@
           Size="204,42.6666666666667"
           Id="Package\Load factSRCSalesTarget"
           TopLeft="53.1249992083758,193.631582592003" />
+        <NodeLayout
+          Size="172,42.6666666666667"
+          Id="Package\Unknown Elements"
+          TopLeft="608.124990938231,294.894742392767" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint]"
           TopLeft="150.041666005428,75.5087725479958">
@@ -467,10 +471,6 @@
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="172,42.6666666666667"
-          Id="Package\Unknown Elements"
-          TopLeft="608.124990938231,294.894742392767" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 8]"
           TopLeft="684.374991143122,252.719302199334">
