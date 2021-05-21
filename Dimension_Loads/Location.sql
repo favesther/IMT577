@@ -28,25 +28,39 @@ BEGIN
 
 	INSERT INTO dbo.dimLocation
 	(
-	dimAddress
-	,dimCity
-	,dimStateProvince
-    ,dimCountry
+	dimSourceLocationID
 	,dimPostalCode
+	,dimAddress
+	,dimCity
+	,dimRegion
+	,dimCountry
 	)
-	SELECT [Address]
-		,[City]
-		,[StateProvince]
-		,[Country]
-		,[PostalCode]
-	FROM [dbo].[StageStore]
+	SELECT DISTINCT
+	CAST(dbo.StageCustomer.CustomerID AS VARCHAR(255))
+	,CAST(dbo.StageCustomer.PostalCode AS INT)
+	,dbo.StageCustomer.Address
+	,dbo.StageCustomer.City
+	,dbo.StageCustomer.StateProvince
+	,dbo.StageCustomer.Country 
+	FROM StageCustomer
 	UNION
-	SELECT [Address]
-		,[City]
-		,[StateProvince]
-		,[Country]
-		,[PostalCode]
-	FROM [dbo].[StageReseller]
+	SELECT DISTINCT
+	CAST(dbo.StageStore.StoreID AS VARCHAR(255))
+	,CAST(dbo.StageStore.PostalCode As INT) 
+	,dbo.StageStore.Address 
+	,dbo.StageStore.City 
+	,dbo.StageStore.StateProvince 
+	,dbo.StageStore.Country 
+	FROM StageStore
+	UNION 
+	SELECT DISTINCT
+	CAST(dbo.StageReseller.ResellerID AS VARCHAR(255))
+	,CAST(dbo.StageReseller.PostalCode As INT) 
+	,dbo.StageReseller.Address 
+	,dbo.StageReseller.City 
+	,dbo.StageReseller.StateProvince 
+	,dbo.StageReseller.Country
+	FROM StageReseller
 
 END
 GO 

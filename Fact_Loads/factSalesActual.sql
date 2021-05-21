@@ -50,48 +50,77 @@ BEGIN
     ,dimSalesQuantity
     ,dimSalesUnitPrice
     ,dimSalesExtendedCost
-    ,dimSalesTotalProfit
-	)
-    select Detail.dimProductID, Header.dimStoreKey, Header.dimResellerKey, Header.dimCustomerID, 
-    Header.dimChannelID, Header.dimDateID AS dimSalesDateKey, Header.dimLocationKey, 
-    Header.SalesHeaderID AS dimSourceSalesHeaderID, Detail.SalesDetailID AS dimSourceSalesDetailID, 
-    Detail.SalesAmount, Detail.SalesQuantity, Detail.SalesAmount/Detail.SalesQuantity AS dimSalesUnitPrice, 
-    Detail.dimSalesExtendedCost, Detail.dimSalesTotalProfit
+    ,dimSalesTotalProfit)
+
+
+    SELECT 
+    ISNULL(dbo.dimProduct.dimProductID, -1)
+    ,ISNULL(dbo.dimStore.dimStoreKey, -1)
+    ,ISNULL(dbo.dimReseller.dimResellerKey, -1)
+    ,ISNULL(dbo.dimCustomer.dimCustomerID, -1)
+    ,ISNULL(dbo.dimChannel.dimChannelID, -1)
+    ,dbo.dimDate.DimDateID AS dimSalesDateKey
+    ,dbo.dimLocation.dimLocationKey
+    ,dbo.StageSalesDetail.SalesHeaderID AS dimSourceSalesHeaderID
+    ,dbo.StageSalesDetail.SalesDetailID AS dimSourceSalesDetailID
+    ,dbo.StageSalesDetail.SalesAmount
+    ,dbo.StageSalesDetail.SalesQuantity
+    ,dbo.StageSalesDetail.SalesAmount/dbo.StageSalesDetail.SalesQuantity AS dimSalesUnitPrice
+    ,dbo.dimProduct.dimProductCost * dbo.StageSalesDetail.SalesQuantity AS dimSalesExtendedCost
+    ,dbo.StageSalesDetail.SalesAmount - dbo.dimProduct.dimProductCost * dbo.StageSalesDetail.SalesQuantity AS dimSalesTotalProfit
+
+    FROM StageSalesHeader
+    LEFT JOIN StageSalesDetail ON
+    dbo.StageSalesDetail.SalesHeaderID = dbo.StageSalesHeader.SalesHeaderID
+    LEFT JOIN dimProduct ON
+    dbo.dimProduct.dimProductID = dbo.StageSalesDetail.ProductID 
+    LEFT JOIN dimChannel ON
+    dbo.dimChannel.dimChannelID = dbo.StageSalesHeader.ChannelID
+    LEFT JOIN dimReseller ON
+    dbo.dimReseller.dimSourceResellerID = dbo.StageSalesHeader.ResellerID
+    LEFT JOIN dimCustomer ON
+    dbo.dimCustomer.dimSourceCustomerID = dbo.StageSalesHeader.CustomerID
+    LEFT JOIN dimStore ON
+    dbo.dimStore.dimSourceStoreID = dbo.StageSalesHeader.StoreID
+    LEFT JOIN dimDate ON
+    dbo.dimDate.FullDate = dbo.StageSalesHeader.Date
+    LEFT JOIN dimLocation
+    on dbo.dimLocation.dimLocationKey=dbo.dimReseller.dimLocationKey 
+    OR dbo.dimLocation.dimLocationKey=dbo.dimCustomer.dimLocationKey 
+    OR dbo.dimLocation.dimLocationKey=dbo.dimStore.dimLocationKey
+
+    -- select Detail.dimProductID, Header.dimStoreKey, Header.dimResellerKey, Header.dimCustomerID, 
+    -- Header.dimChannelID, Header.dimDateID AS dimSalesDateKey, Header.dimLocationKey, 
+    -- Header.SalesHeaderID AS dimSourceSalesHeaderID, Detail.SalesDetailID AS dimSourceSalesDetailID, 
+    -- Detail.SalesAmount, Detail.SalesQuantity, Detail.SalesAmount/Detail.SalesQuantity AS dimSalesUnitPrice, 
+    -- Detail.dimSalesExtendedCost, Detail.dimSalesTotalProfit
     
-    from (
-            select sd.SalesDetailID, sd.SalesHeaderID, P.dimProductID, sd.SalesQuantity, sd.SalesAmount,
-            p.dimProductCost,
-            sd.SalesAmount-sd.SalesQuantity*p.ProductCost AS dimSalesTotalProfit
-            from dbo.StageSalesDetail sd
-            left join dbo.dimProduct P
-            on sd.ProductID = P.dimSourceProductID
-        ) Detail, 
-        (
-            select H.*, c.dimChannelID, s.dimStoreKey, Customer.dimCustomerID, r.dimResellerKey, d.dimDateID
-            from dbo.StageSalesHeader H
-            left join dbo.dimChannel c
-            on c.dimSourceChannelID = H.ChannelID  
-            left join dbo.dimStore s
-            on s.dimSourceStoreID = H.StoreID
-            left join dbo.dimCustomer Customer
-            on Customer.dimSourceCustomerID = H.CustomerID
-            left join dbo.Reseller r
-            on r.dimSourceResellerID = r.ResellerID
-            left join dbo.DimDate d
-            on d.FullDate = H.Date
-            join dbo.dimLocation l 
-            on l.dimLocationKey=r.dimLocationKey OR l.dimLocationKey=Customer.dimLocationKey OR l.dimLocationKey=s.dimLocationKey
-        ) Header
-    where Detail.SalesHeaderID = Header.SalesHeaderID
-    --     INNER JOIN (select dbo.StageSalesHeader sh 
-    --     on sh.SalesHeaderID = sd.SalesHeaderID) Sales,
-    -- join dbo.dimProduct p on p.dimSourceProductID =sd.ProductID
-    -- left join dbo.dimStore s on s.dimSourceStoreID =sh.StoreID
-    -- left join dbo.dimReseller r on r.dimSourceResellerID=sh.ResellerID
-    -- left join dbo.dimCustomer c on c.dimSourceCustomerID=sh.CustomerID
-    -- join dbo.dimChannel ch on ch.dimSourceChannelID=sh.ChannelID
-    -- left join dbo.DimDate d on d.FullDate=sh.Date
-    -- join dbo.dimLocation l on l.dimLocationKey=r.dimLocationKey OR l.dimLocationKey=c.dimLocationKey OR l.dimLocationKey=s.dimLocationKey;
+    -- from (
+    --         select sd.SalesDetailID, sd.SalesHeaderID, P.dimProductID, sd.SalesQuantity, sd.SalesAmount,
+    --         p.dimProductCost,
+    --         sd.SalesAmount-sd.SalesQuantity*p.ProductCost AS dimSalesTotalProfit
+    --         from dbo.StageSalesDetail sd
+    --         left join dbo.dimProduct P
+    --         on sd.ProductID = P.dimSourceProductID
+    --     ) Detail, 
+    --     (
+    --         select H.*, c.dimChannelID, s.dimStoreKey, Customer.dimCustomerID, r.dimResellerKey, d.dimDateID
+    --         from dbo.StageSalesHeader H
+    --         left join dbo.dimChannel c
+    --         on c.dimSourceChannelID = H.ChannelID  
+    --         left join dbo.dimStore s
+    --         on s.dimSourceStoreID = H.StoreID
+    --         left join dbo.dimCustomer Customer
+    --         on Customer.dimSourceCustomerID = H.CustomerID
+    --         left join dbo.Reseller r
+    --         on r.dimSourceResellerID = r.ResellerID
+    --         left join dbo.DimDate d
+    --         on d.FullDate = H.Date
+    --         join dbo.dimLocation l 
+    --         on l.dimLocationKey=r.dimLocationKey OR l.dimLocationKey=Customer.dimLocationKey OR l.dimLocationKey=s.dimLocationKey
+    --     ) Header
+    -- where Detail.SalesHeaderID = Header.SalesHeaderID
+
 END
 GO 
 

@@ -39,7 +39,7 @@ BEGIN
 	SELECT s.dimStoreKey, r.dimResellerKey, c.dimChannelID, DimDate.DimDateID as dimTargetDateKey, 
 	CAST(CRS.TargetSalesAmount AS int)/365.0 as SalesTargetSalesAmount
 	FROM dbo.StageTargetCRS AS CRS
-	join dbo.dimChannel c
+	left join dbo.dimChannel c
 	on pt.TargetName = c.dimChannelName
 	left join dbo.dimStore s
 	on pt.TargetName = s.dimStoreName
