@@ -52,32 +52,46 @@ BEGIN
     ,dimSalesExtendedCost
     ,dimSalesTotalProfit
 	)
-    SELECT p.dimProductID, 
-    ISNULL(s.dimStoreKey,-1), 
-    ISNULL(r.dimResellerKey,-1),
-    ISNULL(c.dimCustomerID,-1), 
-    ch.dimChannelID,
-    d.DimDateID as dimSalesDateKey,
-    l.dimLocationKey, 
-    sh.SalesHeaderID AS dimSourceSalesHeaderID, 
-    sd.SalesDetailID AS dimSourceSalesDetailID,
-    sd.SalesAmount AS dimSalesAmount, 
-    sd.SalesQuantity AS dimSalesQuantity, 
-    sd.SalesAmount/sd.SalesQuantity AS dimSalesUnitPrice, 
-    p.dimProductCost AS SalesExtendedCost,
-    sd.SalesAmount-sd.SalesQuantity*p.dimProductCost as dimSalesTotalProfit
-    FROM (
-        select *
-        from dbo.StageSalesDetail sd
-        INNER JOIN dbo.StageSalesHeader sh 
-        on sh.SalesHeaderID = sd.SalesHeaderID) Sales,
-    join dbo.dimProduct p on p.dimSourceProductID =sd.ProductID
-    left join dbo.dimStore s on s.dimSourceStoreID =sh.StoreID
-    left join dbo.dimReseller r on r.dimSourceResellerID=sh.ResellerID
-    left join dbo.dimCustomer c on c.dimSourceCustomerID=sh.CustomerID
-    join dbo.dimChannel ch on ch.dimSourceChannelID=sh.ChannelID
-    left join dbo.DimDate d on d.FullDate=sh.Date
-    join dbo.dimLocation l on l.dimLocationKey=r.dimLocationKey OR l.dimLocationKey=c.dimLocationKey OR l.dimLocationKey=s.dimLocationKey;
+    select Detail.dimProductID, Header.dimStoreKey, Header.dimResellerKey, Header.dimCustomerID, 
+    Header.dimChannelID, Header.dimDateID AS dimSalesDateKey, Header.dimLocationKey, 
+    Header.SalesHeaderID AS dimSourceSalesHeaderID, Detail.SalesDetailID AS dimSourceSalesDetailID, 
+    Detail.SalesAmount, Detail.SalesQuantity, Detail.SalesAmount/Detail.SalesQuantity AS dimSalesUnitPrice, 
+    Detail.dimSalesExtendedCost, Detail.dimSalesTotalProfit
+    
+    from (
+            select sd.SalesDetailID, sd.SalesHeaderID, P.dimProductID, sd.SalesQuantity, sd.SalesAmount,
+            p.dimProductCost,
+            sd.SalesAmount-sd.SalesQuantity*p.ProductCost AS dimSalesTotalProfit
+            from dbo.StageSalesDetail sd
+            left join dbo.dimProduct P
+            on sd.ProductID = P.dimSourceProductID
+        ) Detail, 
+        (
+            select H.*, c.dimChannelID, s.dimStoreKey, Customer.dimCustomerID, r.dimResellerKey, d.dimDateID
+            from dbo.StageSalesHeader H
+            left join dbo.dimChannel c
+            on c.dimSourceChannelID = H.ChannelID  
+            left join dbo.dimStore s
+            on s.dimSourceStoreID = H.StoreID
+            left join dbo.dimCustomer Customer
+            on Customer.dimSourceCustomerID = H.CustomerID
+            left join dbo.Reseller r
+            on r.dimSourceResellerID = r.ResellerID
+            left join dbo.DimDate d
+            on d.FullDate = H.Date
+            join dbo.dimLocation l 
+            on l.dimLocationKey=r.dimLocationKey OR l.dimLocationKey=Customer.dimLocationKey OR l.dimLocationKey=s.dimLocationKey
+        ) Header
+    where Detail.SalesHeaderID = Header.SalesHeaderID
+    --     INNER JOIN (select dbo.StageSalesHeader sh 
+    --     on sh.SalesHeaderID = sd.SalesHeaderID) Sales,
+    -- join dbo.dimProduct p on p.dimSourceProductID =sd.ProductID
+    -- left join dbo.dimStore s on s.dimSourceStoreID =sh.StoreID
+    -- left join dbo.dimReseller r on r.dimSourceResellerID=sh.ResellerID
+    -- left join dbo.dimCustomer c on c.dimSourceCustomerID=sh.CustomerID
+    -- join dbo.dimChannel ch on ch.dimSourceChannelID=sh.ChannelID
+    -- left join dbo.DimDate d on d.FullDate=sh.Date
+    -- join dbo.dimLocation l on l.dimLocationKey=r.dimLocationKey OR l.dimLocationKey=c.dimLocationKey OR l.dimLocationKey=s.dimLocationKey;
 END
 GO 
 

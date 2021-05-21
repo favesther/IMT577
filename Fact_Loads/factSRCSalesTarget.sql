@@ -10,9 +10,11 @@ IF NOT EXISTS (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHE
 BEGIN
 	CREATE TABLE dbo.factSRCSalesTarget
 	(
-	factSRCSalesTargetKey INT IDENTITY(1,1) CONSTRAINT PK_factSRCSalesTargetKey PRIMARY KEY CLUSTERED NOT NULL, -- SurrogateKey    dimChannelID INT NOT NULL CONSTRAINT FK_factSalesActual_dimChannelID FOREIGN KEY REFERENCES dbo.dimChannel (dimChannelID),
-    dimChannelID INT NOT NULL CONSTRAINT FK_PK_factSRCSalesTarget_dimChannelID FOREIGN KEY REFERENCES dbo.dimChannel (dimChannelID),
-	dimSRCname nvarchar(255) NOT NULL,
+	factSRCSalesTargetKey INT IDENTITY(1,1) CONSTRAINT PK_factSRCSalesTargetKey PRIMARY KEY CLUSTERED NOT NULL, -- SurrogateKey
+    dimStoreKey INT NOT NULL CONSTRAINT FK_factSRCSalesTarget_dimStoreKey  FOREIGN KEY REFERENCES dbo.dimStore (dimStoreKey),
+    dimResellerKey INT NOT NULL CONSTRAINT FK_factSRCSalesTarget_dimResellerKey FOREIGN KEY REFERENCES dbo.dimReseller (dimResellerKey),    
+	dimChannelID INT NOT NULL CONSTRAINT FK_factSRCSalesTarget_dimChannelID FOREIGN KEY REFERENCES dbo.dimChannel (dimChannelID),
+	-- dimSRCname nvarchar(255) NOT NULL,
 	dimTargetDateKey INT NOT NULL CONSTRAINT FK_factRSCSalesTarget_DimDateID FOREIGN KEY REFERENCES dbo.DimDate (dimDateID),
 	SalesTargetSalesAmount Numeric(16,6) NOT NULL,
 	);
@@ -27,21 +29,24 @@ BEGIN
 
 	INSERT INTO dbo.factSRCSalesTarget
 	(
-	dimChannelID,
-	dimSRCname,
-	dimTargetDateKey,
+	dimStoreKey
+	dimResellerKey
+	dimChannelID
+	dimTargetDateKey
 	SalesTargetSalesAmount
 	)
 
-	SELECT CRS.dimChannelID ,
-	CRS.TargetName as dimSRCname,
-	DimDate.DimDateID as dimTargetDateKey, 
+	SELECT s.dimStoreKey, r.dimResellerKey, c.dimChannelID, DimDate.DimDateID as dimTargetDateKey, 
 	CAST(CRS.TargetSalesAmount AS int)/365.0 as SalesTargetSalesAmount
-	FROM (
-		select *
-		from dbo.StageTargetCRS StageTargetCRS,dbo.dimChannel Channel
-		where StageTargetCRS.ChannelName = Channel.dimChannelName) CRS, dbo.DimDate DimDate
-	WHERE CRS.Year = DimDate.CalendarYear    
+	FROM dbo.StageTargetCRS AS CRS
+	join dbo.dimChannel c
+	on pt.TargetName = c.dimChannelName
+	left join dbo.dimStore s
+	on pt.TargetName = s.dimStoreName
+	left join dbo.dimReseller r
+	on pt.TargetName = r.dimResellerName
+	left join dbo.DimDate DimDate
+	on CRS.Year = DimDate.CalendarYear    
 END
 GO 
 
