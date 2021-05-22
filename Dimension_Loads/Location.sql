@@ -10,9 +10,10 @@ BEGIN
 	CREATE TABLE dbo.dimLocation
 	(
 	dimLocationKey INT IDENTITY(1,1) CONSTRAINT PK_dimLocation PRIMARY KEY CLUSTERED NOT NULL, -- SurrogateKey
+	-- dimSourceLocationID INT NOT NUll, --Natural Key
+	dimPostalCode nvarchar(255) NOT NULL,
 	dimAddress nvarchar(255) NOT NULL,
 	dimCity nvarchar(255) NOT NULL,
-	dimPostalCode nvarchar(255) NOT NULL,
     dimStateProvince nvarchar(255) NOT NULL,
     dimCountry nvarchar(255) NOT NULL,
 	);
@@ -28,16 +29,16 @@ BEGIN
 
 	INSERT INTO dbo.dimLocation
 	(
-	dimSourceLocationID
-	,dimPostalCode
+	-- dimSourceLocationID
+	dimPostalCode
 	,dimAddress
 	,dimCity
-	,dimRegion
+	,dimStateProvince
 	,dimCountry
 	)
 	SELECT DISTINCT
-	CAST(dbo.StageCustomer.CustomerID AS VARCHAR(255))
-	,CAST(dbo.StageCustomer.PostalCode AS INT)
+	-- CAST(dbo.StageCustomer.CustomerID AS VARCHAR(255))
+	CAST(dbo.StageCustomer.PostalCode AS INT)
 	,dbo.StageCustomer.Address
 	,dbo.StageCustomer.City
 	,dbo.StageCustomer.StateProvince
@@ -45,8 +46,8 @@ BEGIN
 	FROM StageCustomer
 	UNION
 	SELECT DISTINCT
-	CAST(dbo.StageStore.StoreID AS VARCHAR(255))
-	,CAST(dbo.StageStore.PostalCode As INT) 
+	-- CAST(dbo.StageStore.StoreID AS VARCHAR(255))
+	CAST(dbo.StageStore.PostalCode As INT) 
 	,dbo.StageStore.Address 
 	,dbo.StageStore.City 
 	,dbo.StageStore.StateProvince 
@@ -54,8 +55,8 @@ BEGIN
 	FROM StageStore
 	UNION 
 	SELECT DISTINCT
-	CAST(dbo.StageReseller.ResellerID AS VARCHAR(255))
-	,CAST(dbo.StageReseller.PostalCode As INT) 
+	-- CAST(dbo.StageReseller.ResellerID AS VARCHAR(255))
+	CAST(dbo.StageReseller.PostalCode As INT) 
 	,dbo.StageReseller.Address 
 	,dbo.StageReseller.City 
 	,dbo.StageReseller.StateProvince 
@@ -74,18 +75,20 @@ SET IDENTITY_INSERT dbo.dimLocation ON;
 INSERT INTO dbo.dimLocation
 (
 dimLocationKey
+-- ,dimSourceLocationID
+,dimPostalCode
 ,dimAddress
 ,dimCity
-,dimPostalCode
 ,dimStateProvince
 ,dimCountry
 )
 VALUES
 (
 -1
+-- ,-1
+,0
 ,'Unknown' 
 ,'Unknown'
-,0
 ,'Unknown'
 ,'Unknown' 
 );

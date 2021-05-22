@@ -66,8 +66,8 @@ BEGIN
     ,dbo.StageSalesDetail.SalesAmount
     ,dbo.StageSalesDetail.SalesQuantity
     ,dbo.StageSalesDetail.SalesAmount/dbo.StageSalesDetail.SalesQuantity AS dimSalesUnitPrice
-    ,dbo.dimProduct.dimProductCost * dbo.StageSalesDetail.SalesQuantity AS dimSalesExtendedCost
-    ,dbo.StageSalesDetail.SalesAmount - dbo.dimProduct.dimProductCost * dbo.StageSalesDetail.SalesQuantity AS dimSalesTotalProfit
+    ,ISNULL(dbo.dimProduct.dimProductCost * dbo.StageSalesDetail.SalesQuantity,0) AS dimSalesExtendedCost
+    ,ISNULL(dbo.StageSalesDetail.SalesAmount - dbo.dimProduct.dimProductCost * dbo.StageSalesDetail.SalesQuantity,0) AS dimSalesTotalProfit
 
     FROM StageSalesHeader
     LEFT JOIN StageSalesDetail ON
