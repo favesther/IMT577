@@ -11,8 +11,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="Package"
   DTS:PackageType="5"
-  DTS:VersionBuild="59"
-  DTS:VersionGUID="{9E4E1273-CC99-4855-9925-F79DF7F3B7B3}">
+  DTS:VersionBuild="68"
+  DTS:VersionGUID="{AA100DDD-551A-4591-85BC-773BB092C401}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -27,7 +27,22 @@
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAwYc9cag84EmDEg74nYz3VgAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAADAjk3xjNzm7wuoAyhGiaas+o8KstZVIpwLNjmZvciO5AAAAAAOgAAAAAIAACAAAAB6s9SW7JM84+ZsmAgJAdKH3YvfWO8tkkrpJn8ySynvaDAAAADjEi0jq3v9NNvhBikwJAS17qIrXJ668I0L04TP+4+ixQXBJlXzv/TvVJNqT6ZGFIlAAAAAGJ2Ub295X4pkuO0znWbeozvmZmGKuAJaPZA4Nb5T2p/dGIdUExGUiXS3BEtm+YbtVW5oPNeHpruR05idwYMucg</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAwYc9cag84EmDEg74nYz3VgAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAABxCIzeBHscq1JZl6HNNIhErRxTLK9w9z5zMDEDxIo5EgAAAAAOgAAAAAIAACAAAABQ62FrPIeYJWSsT82dgTjUfxPiFWzJ41jJugn0v1BLQDAAAABjiGcCNVQOl0gRVhaVpLVZ42AM2wiVzXTR9YDAbuPug2OMRTf/gIDFZFbZra+DOjFAAAAAy3OLQFlE5aEaGEy0EYCHhOXs9zROAa0j+Fl4/VzoeGvEYNAML6NyVQm888ASI+Pc/q5tEAoEC1gUt/WoM0HdRQ</DTS:Password>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[ML-RefVm-765087.DestinationSystem.sa 1]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{ADF36509-A2F7-4C51-927F-54867D8F0FC9}"
+      DTS:ObjectName="ML-RefVm-765087.DestinationSystem.sa 1">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=ML-RefVm-765087;User ID=sa;Initial Catalog=DestinationSystem;Provider=SQLNCLI11.1;Persist Security Info=True;Auto Translate=False;">
+          <DTS:Password
+            DTS:Name="Password"
+            Sensitive="1"
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAwYc9cag84EmDEg74nYz3VgAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAADfkZH7WkHdg4sxSGa5GsXofW5a7y4N0Sj0987EZCjoLQAAAAAOgAAAAAIAACAAAADV/NKwjrkkc1ti3LCFJ0uQJzpqP0ciS3BF6yp7Fa4vTDAAAACKgCR/STAqGyWdHEAC2sCl/cmwJw0B/RF6j7eQJIBIBPC9skHbliyN1POR6H4Y5TxAAAAAlLrZ9ccfesYkW7d282VX7RR/GqTZ1HMRlFTE08eGL8wKGxgdvM2toSyYUUwNPWsSbYn5F4i5Ffr5v/ZV5ig6Ng</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -43,7 +58,7 @@
       DTS:LocaleID="-1"
       DTS:ObjectName="Create Channel"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="2">
+      DTS:ThreadHint="1">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
@@ -60,7 +75,7 @@
       DTS:LocaleID="-1"
       DTS:ObjectName="Create Customer"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="1">
+      DTS:ThreadHint="2">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
@@ -77,12 +92,12 @@
       DTS:LocaleID="-1"
       DTS:ObjectName="Create Location"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="1">
+      DTS:ThreadHint="2">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{F14FF616-B99F-42FB-B01B-BD5D30174DB3}"
-          SQLTask:SqlStatementSource="IF NOT EXISTS (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'dimLocation')&#xA;BEGIN&#xA;&#x9;CREATE TABLE dbo.dimLocation&#xA;&#x9;(&#xA;&#x9;dimLocationKey INT IDENTITY(1,1) CONSTRAINT PK_dimLocation PRIMARY KEY CLUSTERED NOT NULL, -- SurrogateKey&#xA;&#x9;dimAddress nvarchar(255) NOT NULL,&#xA;&#x9;dimCity nvarchar(255) NOT NULL,&#xA;&#x9;dimPostalCode nvarchar(255) NOT NULL,&#xA;    dimStateProvince nvarchar(255) NOT NULL,&#xA;    dimCountry nvarchar(255) NOT NULL,&#xA;&#x9;);&#xA;END&#xA;GO" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="IF NOT EXISTS (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'dimLocation')&#xA;BEGIN&#xA;&#x9;CREATE TABLE dbo.dimLocation&#xA;&#x9;(&#xA;&#x9;dimLocationKey INT IDENTITY(1,1) CONSTRAINT PK_dimLocation PRIMARY KEY CLUSTERED NOT NULL, -- SurrogateKey&#xA;&#x9;-- dimSourceLocationID INT NOT NUll, --Natural Key&#xA;&#x9;dimPostalCode nvarchar(255) NOT NULL,&#xA;&#x9;dimAddress nvarchar(255) NOT NULL,&#xA;&#x9;dimCity nvarchar(255) NOT NULL,&#xA;    dimStateProvince nvarchar(255) NOT NULL,&#xA;    dimCountry nvarchar(255) NOT NULL,&#xA;&#x9;);&#xA;END&#xA;GO" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
@@ -111,7 +126,7 @@
       DTS:LocaleID="-1"
       DTS:ObjectName="Create Reseller"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="1">
+      DTS:ThreadHint="2">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
@@ -128,7 +143,7 @@
       DTS:LocaleID="-1"
       DTS:ObjectName="Create Store"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="1">
+      DTS:ThreadHint="2">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
@@ -145,7 +160,7 @@
       DTS:LocaleID="-1"
       DTS:ObjectName="Delete Channel"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="2">
+      DTS:ThreadHint="1">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
@@ -234,7 +249,7 @@
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
-          SQLTask:Connection="{F14FF616-B99F-42FB-B01B-BD5D30174DB3}"
+          SQLTask:Connection="{ADF36509-A2F7-4C51-927F-54867D8F0FC9}"
           SQLTask:SqlStatementSource="IF EXISTS (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'dimStore')&#xA;BEGIN&#xA;&#x9;DELETE FROM dbo.dimStore;&#xA;END&#xA;GO" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
@@ -247,7 +262,7 @@
       DTS:LocaleID="-1"
       DTS:ObjectName="Load Channel"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="2">
+      DTS:ThreadHint="1">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
@@ -264,7 +279,7 @@
       DTS:LocaleID="-1"
       DTS:ObjectName="Load Customer"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="1">
+      DTS:ThreadHint="2">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
@@ -281,12 +296,12 @@
       DTS:LocaleID="-1"
       DTS:ObjectName="Load Location"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="1">
+      DTS:ThreadHint="2">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{F14FF616-B99F-42FB-B01B-BD5D30174DB3}"
-          SQLTask:SqlStatementSource="IF EXISTS (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'dimLocation')&#xA;BEGIN&#xA;&#x9;-- ====================================&#xA;&#x9;-- Load dimLocation table&#xA;&#x9;-- ====================================&#xA;&#xA;&#x9;INSERT INTO dbo.dimLocation&#xA;&#x9;(&#xA;&#x9;dimSourceLocationID&#xA;&#x9;,dimPostalCode&#xA;&#x9;,dimAddress&#xA;&#x9;,dimCity&#xA;&#x9;,dimRegion&#xA;&#x9;,dimCountry&#xA;&#x9;)&#xA;&#x9;SELECT DISTINCT&#xA;&#x9;CAST(dbo.StageCustomer.CustomerID AS VARCHAR(255))&#xA;&#x9;,CAST(dbo.StageCustomer.PostalCode AS INT)&#xA;&#x9;,dbo.StageCustomer.Address&#xA;&#x9;,dbo.StageCustomer.City&#xA;&#x9;,dbo.StageCustomer.StateProvince&#xA;&#x9;,dbo.StageCustomer.Country &#xA;&#x9;FROM StageCustomer&#xA;&#x9;UNION&#xA;&#x9;SELECT DISTINCT&#xA;&#x9;CAST(dbo.StageStore.StoreID AS VARCHAR(255))&#xA;&#x9;,CAST(dbo.StageStore.PostalCode As INT) &#xA;&#x9;,dbo.StageStore.Address &#xA;&#x9;,dbo.StageStore.City &#xA;&#x9;,dbo.StageStore.StateProvince &#xA;&#x9;,dbo.StageStore.Country &#xA;&#x9;FROM StageStore&#xA;&#x9;UNION &#xA;&#x9;SELECT DISTINCT&#xA;&#x9;CAST(dbo.StageReseller.ResellerID AS VARCHAR(255))&#xA;&#x9;,CAST(dbo.StageReseller.PostalCode As INT) &#xA;&#x9;,dbo.StageReseller.Address &#xA;&#x9;,dbo.StageReseller.City &#xA;&#x9;,dbo.StageReseller.StateProvince &#xA;&#x9;,dbo.StageReseller.Country&#xA;&#x9;FROM StageReseller&#xA;&#xA;END&#xA;GO " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="IF EXISTS (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'dimLocation')&#xA;BEGIN&#xA;&#x9;-- ====================================&#xA;&#x9;-- Load dimLocation table&#xA;&#x9;-- ====================================&#xA;&#xA;&#x9;INSERT INTO dbo.dimLocation&#xA;&#x9;(&#xA;&#x9;-- dimSourceLocationID&#xA;&#x9;dimPostalCode&#xA;&#x9;,dimAddress&#xA;&#x9;,dimCity&#xA;&#x9;,dimStateProvince&#xA;&#x9;,dimCountry&#xA;&#x9;)&#xA;&#x9;SELECT DISTINCT&#xA;&#x9;-- CAST(dbo.StageCustomer.CustomerID AS VARCHAR(255))&#xA;&#x9;CAST(dbo.StageCustomer.PostalCode AS INT)&#xA;&#x9;,dbo.StageCustomer.Address&#xA;&#x9;,dbo.StageCustomer.City&#xA;&#x9;,dbo.StageCustomer.StateProvince&#xA;&#x9;,dbo.StageCustomer.Country &#xA;&#x9;FROM StageCustomer&#xA;&#x9;UNION&#xA;&#x9;SELECT DISTINCT&#xA;&#x9;-- CAST(dbo.StageStore.StoreID AS VARCHAR(255))&#xA;&#x9;CAST(dbo.StageStore.PostalCode As INT) &#xA;&#x9;,dbo.StageStore.Address &#xA;&#x9;,dbo.StageStore.City &#xA;&#x9;,dbo.StageStore.StateProvince &#xA;&#x9;,dbo.StageStore.Country &#xA;&#x9;FROM StageStore&#xA;&#x9;UNION &#xA;&#x9;SELECT DISTINCT&#xA;&#x9;-- CAST(dbo.StageReseller.ResellerID AS VARCHAR(255))&#xA;&#x9;CAST(dbo.StageReseller.PostalCode As INT) &#xA;&#x9;,dbo.StageReseller.Address &#xA;&#x9;,dbo.StageReseller.City &#xA;&#x9;,dbo.StageReseller.StateProvince &#xA;&#x9;,dbo.StageReseller.Country&#xA;&#x9;FROM StageReseller&#xA;&#xA;END&#xA;GO " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
@@ -315,7 +330,7 @@
       DTS:LocaleID="-1"
       DTS:ObjectName="Load Reseller"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="1">
+      DTS:ThreadHint="2">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
@@ -332,12 +347,12 @@
       DTS:LocaleID="-1"
       DTS:ObjectName="Load Store"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="1">
+      DTS:ThreadHint="2">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{F14FF616-B99F-42FB-B01B-BD5D30174DB3}"
-          SQLTask:SqlStatementSource="IF EXISTS (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'dimStore')&#xA;BEGIN&#xA;&#x9;-- ====================================&#xA;&#x9;-- Load dimStore table&#xA;&#x9;-- ====================================&#xA;&#x9;INSERT INTO dbo.dimStore&#xA;&#x9;(&#xA;&#x9;dimLocationKey&#xA;    ,dimSourceStoreID&#xA;&#x9;,dimStoreName&#xA;    ,dimStoreNumber&#xA;    ,dimStoreManager&#xA;&#x9;)&#xA;&#xA;&#x9;SELECT &#xA;&#x9;Location.dimLocationKey AS dimLocationKey&#xA;&#x9;,Store.StoreID AS dimSourceStoreID&#xA;&#x9;,CAST(concat(&quot;Store Number&quot;,&quot; &quot;,Store.dimStoreNumber) AS nvarchar(255)) AS dimStoreName&#xA;&#x9;,Store.StoreNumber AS dimStoreNumber&#xA;&#x9;,Store.StoreManager AS dimStoreManager&#xA;&#xA;&#x9;FROM dbo.StageStore Store&#xA;&#x9;INNER JOIN dbo.dimLocation Location&#xA;&#x9;ON Store.Address = Location.dimAddress or Store.PostalCode = Location.dimPostalCode;&#xA;&#xA;&#x9;-- FROM (&#xA;&#x9;-- &#x9;select Store1.StoreID, &#xA;&#x9;-- &#x9;Store1.StoreManager,&#xA;&#x9;-- &#x9;cast(Prefix.column1+' '+Prefix.column2 AS nvarchar(255)) + ' '+ cast(Store1.StoreNumber AS nvarchar(255)) AS dimStoreName, &#xA;&#x9;-- &#x9;Store1.StoreNumber, &#xA;&#x9;-- &#x9;Store1.Address&#xA;&#x9;-- &#x9;from dbo.StageStore Store1, dbo.Prefix Prefix) Store&#xA;&#x9;-- INNER JOIN dbo.dimLocation Location&#xA;&#x9;-- ON Store.Address = Location.dimAddress&#xA;&#xA;END&#xA;GO " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="IF EXISTS (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'dimStore')&#xA;BEGIN&#xA;&#x9;-- ====================================&#xA;&#x9;-- Load dimStore table&#xA;&#x9;-- ====================================&#xA;&#x9;INSERT INTO dbo.dimStore&#xA;&#x9;(&#xA;&#x9;dimLocationKey&#xA;    ,dimSourceStoreID&#xA;&#x9;,dimStoreName&#xA;    ,dimStoreNumber&#xA;    ,dimStoreManager&#xA;&#x9;)&#xA;&#xA;&#x9;SELECT &#xA;&#x9;dbo.dimLocation.dimLocationKey AS dimLocationKey&#xA;&#x9;,Store.StoreID AS dimSourceStoreID&#xA;&#x9;,concat('Store Number',' ',Store.StoreNumber) AS dimStoreName&#xA;&#x9;,Store.StoreNumber AS dimStoreNumber&#xA;&#x9;,Store.StoreManager AS dimStoreManager&#xA;&#xA;&#x9;FROM dbo.StageStore Store&#xA;&#x9;INNER JOIN dimLocation&#xA;&#x9;ON Store.Address = dbo.dimLocation.dimAddress or Store.PostalCode = dbo.dimLocation.dimPostalCode;&#xA;&#xA;&#x9;-- FROM (&#xA;&#x9;-- &#x9;select Store1.StoreID, &#xA;&#x9;-- &#x9;Store1.StoreManager,&#xA;&#x9;-- &#x9;cast(Prefix.column1+' '+Prefix.column2 AS nvarchar(255)) + ' '+ cast(Store1.StoreNumber AS nvarchar(255)) AS dimStoreName, &#xA;&#x9;-- &#x9;Store1.StoreNumber, &#xA;&#x9;-- &#x9;Store1.Address&#xA;&#x9;-- &#x9;from dbo.StageStore Store1, dbo.Prefix Prefix) Store&#xA;&#x9;-- INNER JOIN dbo.dimLocation Location&#xA;&#x9;-- ON Store.Address = Location.dimAddress&#xA;&#xA;END&#xA;GO " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
@@ -349,7 +364,7 @@
       DTS:LocaleID="-1"
       DTS:ObjectName="Unknown Channel"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="2">
+      DTS:ThreadHint="1">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
@@ -366,7 +381,7 @@
       DTS:LocaleID="-1"
       DTS:ObjectName="Unknown Customer"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="1">
+      DTS:ThreadHint="2">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
@@ -383,12 +398,12 @@
       DTS:LocaleID="-1"
       DTS:ObjectName="Unknown Location"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="1">
+      DTS:ThreadHint="2">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{F14FF616-B99F-42FB-B01B-BD5D30174DB3}"
-          SQLTask:SqlStatementSource="-- =============================&#xA;-- Begin load of unknown member&#xA;-- =============================&#xA;SET IDENTITY_INSERT dbo.dimLocation ON;&#xA;&#xA;INSERT INTO dbo.dimLocation&#xA;(&#xA;dimLocationKey&#xA;,dimAddress&#xA;,dimCity&#xA;,dimPostalCode&#xA;,dimStateProvince&#xA;,dimCountry&#xA;)&#xA;VALUES&#xA;(&#xA;-1&#xA;,'Unknown' &#xA;,'Unknown'&#xA;,0&#xA;,'Unknown'&#xA;,'Unknown' &#xA;);&#xA;SET IDENTITY_INSERT dbo.dimLocation OFF;&#xA;GO&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="-- =============================&#xA;-- Begin load of unknown member&#xA;-- =============================&#xA;SET IDENTITY_INSERT dbo.dimLocation ON;&#xA;&#xA;INSERT INTO dbo.dimLocation&#xA;(&#xA;dimLocationKey&#xA;-- ,dimSourceLocationID&#xA;,dimPostalCode&#xA;,dimAddress&#xA;,dimCity&#xA;,dimStateProvince&#xA;,dimCountry&#xA;)&#xA;VALUES&#xA;(&#xA;-1&#xA;-- ,-1&#xA;,0&#xA;,'Unknown' &#xA;,'Unknown'&#xA;,'Unknown'&#xA;,'Unknown' &#xA;);&#xA;SET IDENTITY_INSERT dbo.dimLocation OFF;&#xA;GO" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
@@ -417,7 +432,7 @@
       DTS:LocaleID="-1"
       DTS:ObjectName="Unknown Reseller"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="1">
+      DTS:ThreadHint="2">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
@@ -434,7 +449,7 @@
       DTS:LocaleID="-1"
       DTS:ObjectName="Unknown Store"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="1">
+      DTS:ThreadHint="2">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
@@ -1140,19 +1155,53 @@
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint 3]"
-          TopLeft="300.979163383755,133.100878368152">
+          Id="Package.PrecedenceConstraints[Constraint 22]"
+          TopLeft="220.312496717088,109.030702878041">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,43.7149139066207"
+              EndConnector="-46.979163681778,0"
               Start="0,0"
-              End="0,36.2149139066207">
+              End="-39.479163681778,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,36.2149139066207" />
+                    End="-39.479163681778,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 3]"
+          TopLeft="330.979163383755,133.100878368152">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-33.3333333333333,43.7149139066214"
+              Start="0,0"
+              End="-33.3333333333333,36.2149139066214">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,13.733408471554" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,13.733408471554"
+                    Point2="0,17.733408471554"
+                    Point3="-4,17.733408471554" />
+                  <mssgle:LineSegment
+                    End="-29.3333333333333,17.733408471554" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-29.3333333333333,17.733408471554"
+                    Point2="-33.3333333333333,17.733408471554"
+                    Point3="-33.3333333333333,21.733408471554" />
+                  <mssgle:LineSegment
+                    End="-33.3333333333333,36.2149139066214" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1163,18 +1212,18 @@
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 4]"
-          TopLeft="294.473955067884,219.482458941439">
+          TopLeft="294.473955067884,219.48245894144">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,27.6359662355529"
+              EndConnector="0,27.6359662355522"
               Start="0,0"
-              End="0,20.1359662355529">
+              End="0,20.1359662355522">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,20.1359662355529" />
+                    End="0,20.1359662355522" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1189,26 +1238,26 @@
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-21.156249923167,40.8070191150448"
+              EndConnector="-21.156249923167,40.8070191150454"
               Start="0,0"
-              End="-21.156249923167,33.3070191150448">
+              End="-21.156249923167,33.3070191150454">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,20.2532283419606" />
+                    End="0,20.253228341961" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,20.2532283419606"
-                    Point2="0,24.2532283419606"
-                    Point3="-4,24.2532283419606" />
+                    Point1="0,20.253228341961"
+                    Point2="0,24.253228341961"
+                    Point3="-4,24.253228341961" />
                   <mssgle:LineSegment
-                    End="-17.156249923167,24.2532283419606" />
+                    End="-17.156249923167,24.253228341961" />
                   <mssgle:CubicBezierSegment
-                    Point1="-17.156249923167,24.2532283419606"
-                    Point2="-21.156249923167,24.2532283419606"
-                    Point3="-21.156249923167,28.2532283419606" />
+                    Point1="-17.156249923167,24.253228341961"
+                    Point2="-21.156249923167,24.253228341961"
+                    Point3="-21.156249923167,28.253228341961" />
                   <mssgle:LineSegment
-                    End="-21.156249923167,33.3070191150448" />
+                    End="-21.156249923167,33.3070191150454" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1309,28 +1358,6 @@
                   Capacity="5">
                   <mssgle:LineSegment
                     End="-19.8124970896171,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint 22]"
-          TopLeft="220.312496717088,109.030702878041">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-46.979163681778,0"
-              Start="0,0"
-              End="-39.479163681778,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="-39.479163681778,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
