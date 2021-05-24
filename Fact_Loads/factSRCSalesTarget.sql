@@ -29,28 +29,28 @@ BEGIN
 
 	INSERT INTO dbo.factSRCSalesTarget
 	(	
-	dimChannelID
-	,dimStoreKey
+	dimStoreKey
 	,dimResellerKey
+	,dimChannelID
 	-- ,dimSRCname
 	,dimTargetDateKey
 	,SalesTargetSalesAmount
 	)
 
 	SELECT 
-	s.dimStoreKey, 
-	r.dimResellerKey, 	
-	c.dimChannelID, 
+	ISNULL(s.dimStoreKey,-1) 
+	,ISNULL(r.dimResellerKey,-1) 	
+	,ISNULL(c.dimChannelID, -1)
 	-- CRS.TargetName AS dimSRCname,
-	DimDate.DimDateID as dimTargetDateKey, 
-	CAST(CRS.TargetSalesAmount AS int)/365.0 as SalesTargetSalesAmount
+	,DimDate.DimDateID as dimTargetDateKey
+	,CAST(CRS.TargetSalesAmount AS int)/365.0 as SalesTargetSalesAmount
 	FROM dbo.StageTargetCRS AS CRS
 	INNER join dbo.dimChannel c
-	on pt.ChannelName = c.dimChannelName
+	on CRS.ChannelName = c.dimChannelName
 	left join dbo.dimStore s
-	on pt.TargetName = s.dimStoreName
+	on CRS.TargetName = s.dimStoreName
 	left join dbo.dimReseller r
-	on pt.TargetName = r.dimResellerName
+	on CRS.TargetName = r.dimResellerName
 	left join dbo.DimDate DimDate
 	on CRS.Year = DimDate.CalendarYear    
 END

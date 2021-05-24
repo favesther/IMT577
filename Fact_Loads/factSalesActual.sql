@@ -10,13 +10,13 @@ IF NOT EXISTS (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHE
 BEGIN
 	CREATE TABLE dbo.factSalesActual	
     (
-    factSalesActualKey INT IDENTITY(1,1) NOT NULL CONSTRAINT factSalesActualKey PRIMARY KEY,
+    factSalesActualKey INT IDENTITY(1,1) CONSTRAINT PK_factSalesActual PRIMARY KEY CLUSTERED NOT NULL,
     dimProductID INT NOT NULL CONSTRAINT FK_factSalesActual_dimProductID FOREIGN KEY REFERENCES dbo.dimProduct (dimProductID),
     dimStoreKey INT NOT NULL CONSTRAINT FK_factSalesActual_dimStoreKey  FOREIGN KEY REFERENCES dbo.dimStore (dimStoreKey),
     dimResellerKey INT NOT NULL CONSTRAINT FK_factSalesActual_dimResellerKey FOREIGN KEY REFERENCES dbo.dimReseller (dimResellerKey),
     dimCustomerID INT NOT NULL CONSTRAINT FK_factSalesActual_dimCustomerID FOREIGN KEY REFERENCES dbo.dimCustomer (dimCustomerID),
     dimChannelID INT NOT NULL CONSTRAINT FK_factSalesActual_dimChannelID FOREIGN KEY REFERENCES dbo.dimChannel (dimChannelID),
-    dimSalesDateKey INT NOT NULL CONSTRAINT FK_factSalesActual_DimDateID FOREIGN KEY REFERENCES dbo.DimDate (dimDateID),
+    dimSalesDateKey INT NOT NULL CONSTRAINT FK_factSalesActual_DimDateID FOREIGN KEY REFERENCES dbo.DimDate (DimDateID),
     dimLocationKey INT NOT NULL CONSTRAINT FK_factSalesActual_dimLocationKey FOREIGN KEY REFERENCES dbo.dimLocation (dimLocationKey),
     dimSourceSalesHeaderID INT NOT NULL, --Natural Key
     dimSourceSalesDetailID INT NOT NULL, --Natural Key
@@ -59,35 +59,40 @@ BEGIN
     ,ISNULL(dbo.dimReseller.dimResellerKey, -1)
     ,ISNULL(dbo.dimCustomer.dimCustomerID, -1)
     ,ISNULL(dbo.dimChannel.dimChannelID, -1)
-    ,dbo.dimDate.DimDateID AS dimSalesDateKey
+    ,dbo.DimDate.DimDateID AS dimSalesDateKey
     ,dbo.dimLocation.dimLocationKey
     ,dbo.StageSalesDetail.SalesHeaderID AS dimSourceSalesHeaderID
     ,dbo.StageSalesDetail.SalesDetailID AS dimSourceSalesDetailID
     ,dbo.StageSalesDetail.SalesAmount
     ,dbo.StageSalesDetail.SalesQuantity
     ,dbo.StageSalesDetail.SalesAmount/dbo.StageSalesDetail.SalesQuantity AS dimSalesUnitPrice
-    ,ISNULL(dbo.dimProduct.dimProductCost * dbo.StageSalesDetail.SalesQuantity,0) AS dimSalesExtendedCost
-    ,ISNULL(dbo.StageSalesDetail.SalesAmount - dbo.dimProduct.dimProductCost * dbo.StageSalesDetail.SalesQuantity,0) AS dimSalesTotalProfit
+    ,ISNULL(dbo.dimProduct.dimProductCost * dbo.StageSalesDetail.SalesQuantity,0.000000) AS dimSalesExtendedCost
+    ,ISNULL(dbo.StageSalesDetail.SalesAmount - dbo.dimProduct.dimProductCost * dbo.StageSalesDetail.SalesQuantity,0.00) AS dimSalesTotalProfit
 
-    FROM StageSalesHeader
-    LEFT JOIN StageSalesDetail ON
+    FROM dbo.StageSalesHeader
+    LEFT JOIN dbo.StageSalesDetail ON
     dbo.StageSalesDetail.SalesHeaderID = dbo.StageSalesHeader.SalesHeaderID
-    LEFT JOIN dimProduct ON
-    dbo.dimProduct.dimProductID = dbo.StageSalesDetail.ProductID 
-    LEFT JOIN dimChannel ON
-    dbo.dimChannel.dimChannelID = dbo.StageSalesHeader.ChannelID
-    LEFT JOIN dimReseller ON
+    LEFT JOIN dbo.dimProduct ON
+    dbo.dimProduct.dimSourceProductID = dbo.StageSalesDetail.ProductID 
+    LEFT JOIN dbo.dimChannel ON
+    dbo.dimChannel.dimSourceChannelID = dbo.StageSalesHeader.ChannelID
+    LEFT JOIN dbo.dimReseller ON
     dbo.dimReseller.dimSourceResellerID = dbo.StageSalesHeader.ResellerID
-    LEFT JOIN dimCustomer ON
+    LEFT JOIN dbo.dimCustomer ON
     dbo.dimCustomer.dimSourceCustomerID = dbo.StageSalesHeader.CustomerID
-    LEFT JOIN dimStore ON
+    LEFT JOIN dbo.dimStore ON
     dbo.dimStore.dimSourceStoreID = dbo.StageSalesHeader.StoreID
-    LEFT JOIN dimDate ON
-    dbo.dimDate.FullDate = dbo.StageSalesHeader.Date
-    LEFT JOIN dimLocation
+    LEFT JOIN dbo.DimDate ON
+    dbo.DimDate.FullDate = dbo.StageSalesHeader.Date
+    LEFT JOIN dbo.dimLocation
     on dbo.dimLocation.dimLocationKey=dbo.dimReseller.dimLocationKey 
     OR dbo.dimLocation.dimLocationKey=dbo.dimCustomer.dimLocationKey 
     OR dbo.dimLocation.dimLocationKey=dbo.dimStore.dimLocationKey
+
+
+
+END
+GO 
 
     -- select Detail.dimProductID, Header.dimStoreKey, Header.dimResellerKey, Header.dimCustomerID, 
     -- Header.dimChannelID, Header.dimDateID AS dimSalesDateKey, Header.dimLocationKey, 
@@ -120,10 +125,6 @@ BEGIN
     --         on l.dimLocationKey=r.dimLocationKey OR l.dimLocationKey=Customer.dimLocationKey OR l.dimLocationKey=s.dimLocationKey
     --     ) Header
     -- where Detail.SalesHeaderID = Header.SalesHeaderID
-
-END
-GO 
-
 
 -- =============================
 -- Begin load of unknown member
