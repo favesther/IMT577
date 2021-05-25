@@ -11,13 +11,13 @@ BEGIN
 	CREATE TABLE dbo.factSalesActual	
     (
     factSalesActualKey INT IDENTITY(1,1) CONSTRAINT PK_factSalesActual PRIMARY KEY CLUSTERED NOT NULL,
-    dimProductID INT NOT NULL CONSTRAINT FK_factSalesActual_dimProductID FOREIGN KEY REFERENCES dbo.dimProduct (dimProductID),
-    dimStoreKey INT NOT NULL CONSTRAINT FK_factSalesActual_dimStoreKey  FOREIGN KEY REFERENCES dbo.dimStore (dimStoreKey),
-    dimResellerKey INT NOT NULL CONSTRAINT FK_factSalesActual_dimResellerKey FOREIGN KEY REFERENCES dbo.dimReseller (dimResellerKey),
-    dimCustomerID INT NOT NULL CONSTRAINT FK_factSalesActual_dimCustomerID FOREIGN KEY REFERENCES dbo.dimCustomer (dimCustomerID),
-    dimChannelID INT NOT NULL CONSTRAINT FK_factSalesActual_dimChannelID FOREIGN KEY REFERENCES dbo.dimChannel (dimChannelID),
-    dimSalesDateKey INT NOT NULL CONSTRAINT FK_factSalesActual_DimDateID FOREIGN KEY REFERENCES dbo.DimDate (DimDateID),
-    dimLocationKey INT NOT NULL CONSTRAINT FK_factSalesActual_dimLocationKey FOREIGN KEY REFERENCES dbo.dimLocation (dimLocationKey),
+    dimProductID INT NOT NULL CONSTRAINT FK_factSalesActual_dimProduct FOREIGN KEY REFERENCES dbo.dimProduct (dimProductID),
+    dimStoreKey INT NOT NULL CONSTRAINT FK_factSalesActual_dimStore  FOREIGN KEY REFERENCES dbo.dimStore (dimStoreKey),
+    dimResellerKey INT NOT NULL CONSTRAINT FK_factSalesActual_dimReseller FOREIGN KEY REFERENCES dbo.dimReseller (dimResellerKey),
+    dimCustomerID INT NOT NULL CONSTRAINT FK_factSalesActual_dimCustomer FOREIGN KEY REFERENCES dbo.dimCustomer (dimCustomerID),
+    dimChannelID INT NOT NULL CONSTRAINT FK_factSalesActual_dimChannel FOREIGN KEY REFERENCES dbo.dimChannel (dimChannelID),
+    dimSalesDateKey INT NOT NULL CONSTRAINT FK_factSalesActual_DimDate FOREIGN KEY REFERENCES dbo.DimDate (DimDateID),
+    dimLocationKey INT NOT NULL CONSTRAINT FK_factSalesActual_dimLocation FOREIGN KEY REFERENCES dbo.dimLocation (dimLocationKey),
     dimSourceSalesHeaderID INT NOT NULL, --Natural Key
     dimSourceSalesDetailID INT NOT NULL, --Natural Key
     dimSalesAmount numeric(18,2) NOT NULL,
@@ -54,11 +54,11 @@ BEGIN
 
 
     SELECT 
-    ISNULL(dbo.dimProduct.dimProductID, -1)
-    ,ISNULL(dbo.dimStore.dimStoreKey, -1)
-    ,ISNULL(dbo.dimReseller.dimResellerKey, -1)
-    ,ISNULL(dbo.dimCustomer.dimCustomerID, -1)
-    ,ISNULL(dbo.dimChannel.dimChannelID, -1)
+    dbo.dimProduct.dimProductID
+    ,dbo.dimStore.dimStoreKey
+    ,dbo.dimReseller.dimResellerKey
+    ,dbo.dimCustomer.dimCustomerID
+    ,dbo.dimChannel.dimChannelID
     ,dbo.DimDate.DimDateID AS dimSalesDateKey
     ,dbo.dimLocation.dimLocationKey
     ,dbo.StageSalesDetail.SalesHeaderID AS dimSourceSalesHeaderID
