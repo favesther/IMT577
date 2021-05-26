@@ -11,8 +11,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="Package"
   DTS:PackageType="5"
-  DTS:VersionBuild="36"
-  DTS:VersionGUID="{97A6D237-E774-4FAE-B536-25D0328D1C92}">
+  DTS:VersionBuild="39"
+  DTS:VersionGUID="{62F99BDA-E30C-455B-A31D-3B3F3DD4DCE1}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -27,7 +27,7 @@
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAwYc9cag84EmDEg74nYz3VgAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAD04hOcghaWcc6iRxNCXF5wLHwoWlqn7UG+Xkuh21gaxgAAAAAOgAAAAAIAACAAAACAV9AsoupMw+Rl0sKy5mlH3+LLx39X47ajPPMfdr8lmDAAAAD7wRLDmyt/vDbJRZFmq0RLsT2y1SBMRtBmbQQ7S9dqCK4o2dIfNpuXTT5/26eCNIVAAAAAzzwdPMoGB5gHUfRo+mr28GFy/zbfGC152AHjhxofclwV4m7wdfWglBhFX9+hbkBOWyUZUu+bo70vl6WXf/1D7w</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAwYc9cag84EmDEg74nYz3VgAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAADUrx/ipll7IFiRClgdbnAXlkt++mkfha+1Ua+/7eIrFgAAAAAOgAAAAAIAACAAAAAtYhOvkKTYGsVzbFZrI08iCjmNw7qF+GD+DIgwQU7uSzAAAABIUM4IU5uYOxsXGZpBXZwYZbhsIXR9kqXtzg4MA0NzQm0Ve4biiK9voWxYnVvdfktAAAAAaaZo32Rix0+jQgT+NJcmpJt38yb3H1RrdOd42kweaq9Xx7t23/fTvXa9xwX6QleTAVQ2vml35gmQ+T8ySlBBOw</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -43,7 +43,7 @@
       DTS:LocaleID="-1"
       DTS:ObjectName="Create factProductSalesTarget"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="2">
+      DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
@@ -94,7 +94,7 @@
       DTS:LocaleID="-1"
       DTS:ObjectName="Delete factProductSalesTarget"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="2">
+      DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
@@ -145,12 +145,12 @@
       DTS:LocaleID="-1"
       DTS:ObjectName="load factProductSalesTarget"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="2">
+      DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{8AE4C0A9-DE7D-4438-8264-A078AAE862D7}"
-          SQLTask:SqlStatementSource="IF EXISTS (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'factProductSalesTarget')&#xA;BEGIN&#xA;&#x9;-- ====================================&#xA;&#x9;-- Load factProductSalesTarget table&#xA;&#x9;-- ====================================&#xA;&#xA;&#x9;INSERT INTO dbo.factProductSalesTarget&#xA;&#x9;(&#xA;    ISNULL(dimProductID, -1)&#xA;    ,ISNULL(dimTargetDateKey, -1)&#xA;    ,ProductTargetSalesAmount&#xA;&#x9;)&#xA;&#x9;SELECT pt.dimProductID&#xA;    , d.DimDateID as dimTargetDateKey&#xA;    ,CAST(TP.SalesQuantityTarget AS int)/365.0 as ProductTargetSalesAmount&#xA;    FROM dbo.StageTargetProduct TP&#xA;&#x9;LEFT join dbo.dimProduct pt&#xA;&#x9;ON TP.ProductID = pt.dimSourceProductID&#xA;&#x9;LEFT JOIN dbo.DimDate d&#xA;    WHERE TP.Year = d.CalendarYear&#xA;END&#xA;GO " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="IF EXISTS (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'factProductSalesTarget')&#xA;BEGIN&#xA;&#x9;-- ====================================&#xA;&#x9;-- Load factProductSalesTarget table&#xA;&#x9;-- ====================================&#xA;&#xA;&#x9;INSERT INTO dbo.factProductSalesTarget&#xA;&#x9;(&#xA;    dimProductID&#xA;    ,dimTargetDateKey&#xA;    ,ProductTargetSalesAmount&#xA;&#x9;)&#xA;&#x9;SELECT pt.dimProductID&#xA;    ,d.DimDateID as dimTargetDateKey&#xA;    ,CAST(TP.SalesQuantityTarget AS int)/365.0 as ProductTargetSalesAmount&#xA;    FROM dbo.StageTargetProduct TP&#xA;&#x9;LEFT join dbo.dimProduct pt&#xA;&#x9;ON TP.ProductID = pt.dimSourceProductID&#xA;&#x9;LEFT JOIN dbo.DimDate d&#xA;    ON TP.Year = d.CalendarYear&#xA;END&#xA;GO " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
@@ -254,6 +254,14 @@
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 5"
       DTS:To="Package\Load factSalesActual" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 6]"
+      DTS:CreationName=""
+      DTS:DTSID="{0EEE7217-EB85-4B0A-8473-4D4425ABB92A}"
+      DTS:From="Package\load factProductSalesTarget"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 6"
+      DTS:To="Package\Delete factSalesActual" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 8]"
       DTS:CreationName=""
@@ -497,6 +505,40 @@
                     Point3="9.74999979510949,25.0877200967168" />
                   <mssgle:LineSegment
                     End="9.74999979510949,34.6754401934336" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 6]"
+          TopLeft="460.527773028033,195.000003670391">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="211.777773456441,-111.964915191257"
+              Start="0,0"
+              End="211.777773456441,-104.464915191257">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,-51.9057576232797" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,-51.9057576232797"
+                    Point2="0,-55.9057576232797"
+                    Point3="4,-55.9057576232797" />
+                  <mssgle:LineSegment
+                    End="207.777773456441,-55.9057576232797" />
+                  <mssgle:CubicBezierSegment
+                    Point1="207.777773456441,-55.9057576232797"
+                    Point2="211.777773456441,-55.9057576232797"
+                    Point3="211.777773456441,-59.9057576232797" />
+                  <mssgle:LineSegment
+                    End="211.777773456441,-104.464915191257" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
