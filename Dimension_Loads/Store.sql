@@ -15,6 +15,7 @@ BEGIN
     dimStoreName nvarchar(255) NOT NULL,
 	dimStoreNumber INT NOT NULL,
     dimStoreManager nvarchar(255) NOT NULL,
+	dimRegion nvarchar(255) NOT NULL,
 	);
 END
 GO
@@ -32,6 +33,7 @@ BEGIN
 	,dimStoreName
     ,dimStoreNumber
     ,dimStoreManager
+	,dimRegion
 	)
 
 	SELECT 
@@ -40,20 +42,11 @@ BEGIN
 	,concat('Store Number',' ',Store.StoreNumber) AS dimStoreName
 	,Store.StoreNumber AS dimStoreNumber
 	,Store.StoreManager AS dimStoreManager
+	,Store.StateProvince AS dimRegion
 
 	FROM dbo.StageStore Store
 	INNER JOIN dimLocation
 	ON Store.Address = dbo.dimLocation.dimAddress or Store.PostalCode = dbo.dimLocation.dimPostalCode;
-
-	-- FROM (
-	-- 	select Store1.StoreID, 
-	-- 	Store1.StoreManager,
-	-- 	cast(Prefix.column1+' '+Prefix.column2 AS nvarchar(255)) + ' '+ cast(Store1.StoreNumber AS nvarchar(255)) AS dimStoreName, 
-	-- 	Store1.StoreNumber, 
-	-- 	Store1.Address
-	-- 	from dbo.StageStore Store1, dbo.Prefix Prefix) Store
-	-- INNER JOIN dbo.dimLocation Location
-	-- ON Store.Address = Location.dimAddress
 
 END
 GO 
@@ -72,6 +65,7 @@ dimStoreKey
 ,dimStoreName
 ,dimStoreNumber
 ,dimStoreManager
+,dimRegion
 )
 VALUES
 (
@@ -81,7 +75,7 @@ VALUES
 ,'Unknown'
 ,0
 ,'Unknown'
-
+,'Unknown'
 );
 SET IDENTITY_INSERT dbo.dimStore OFF;
 GO

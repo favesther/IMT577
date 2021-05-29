@@ -47,21 +47,11 @@ BEGIN
 	FROM dbo.StageTargetCRS AS CRS
 	INNER join dbo.dimChannel c
 	on CRS.ChannelName = c.dimChannelName
-	left join dbo.dimStore s
+	left OUTER join dbo.dimStore s
 	on CRS.TargetName = s.dimStoreName
-	left join dbo.dimReseller r
+	left OUTER join dbo.dimReseller r
 	on CRS.TargetName = r.dimResellerName
-	left join dbo.DimDate DimDate
-	on CRS.Year = DimDate.CalendarYear    
+	left OUTER join dbo.DimDate DimDate
+	on CRS.Year = DimDate.CalendarYear; 
 END
 GO 
-
-	-- FROM StageTargetCRS
-    -- INNER JOIN dbo.dimChannel as dimChannel
-    -- ON StageTargetCRS.ChannelName = dimChannel.dimChannelName 
-    -- INNER JOIN dbo.dimReseller as dimReseller
-    -- StageTargetCRS.TargetName = dimReseller.dimResellerName
-    -- INNER JOIN dbo.DimDate as DimDate
-    -- on StageTargetCRS.Year = DimDate.CalendarYear
-    -- INNER JOIN dbo.dimStore as dimStore 
-    -- on StageTargetCRS.TargetName = dimStore.dimStoreName;

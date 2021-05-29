@@ -12,8 +12,8 @@ BEGIN
 	(
 	dimfactProductSalesTargetKey INT IDENTITY(1,1) CONSTRAINT PK_factProductSalesTarget PRIMARY KEY CLUSTERED NOT NULL, -- SurrogateKey
     dimProductID INT NOT NULL CONSTRAINT FK_factProductSalesTarget_dimProduct FOREIGN KEY REFERENCES dbo.dimProduct (dimProductID),
-    dimTargetDateKey INT NOT NULL CONSTRAINT FK_factProductSalesTarget_DimDate FOREIGN KEY REFERENCES dbo.DimDate (DimDateID),
-    ProductTargetSalesAmount Numeric(16,6) NOT NULL,
+    DimDateID INT NOT NULL CONSTRAINT FK_factProductSalesTarget_DimDate FOREIGN KEY REFERENCES dbo.DimDate (DimDateID),
+    dimTargetSalesAmount INT NOT NULL,
 	);
 END
 GO
@@ -28,17 +28,17 @@ BEGIN
 	INSERT INTO dbo.factProductSalesTarget
 	(
     dimProductID
-    ,dimTargetDateKey
-    ,ProductTargetSalesAmount
+    ,DimDateID
+    ,dimTargetSalesAmount
 	)
-	SELECT pt.dimProductID
-    ,d.DimDateID as dimTargetDateKey
-    ,CAST(TP.SalesQuantityTarget AS int)/365.0 as ProductTargetSalesAmount
-    FROM dbo.StageTargetProduct TP
-	LEFT join dbo.dimProduct pt
-	ON TP.ProductID = pt.dimSourceProductID
-	LEFT JOIN dbo.DimDate d
-    ON TP.Year = d.CalendarYear
+	SELECT dbo.dimProduct.dimProductID
+    ,dbo.DimDate.DimDateID
+    ,dbo.StageTargetProduct.SalesQuantityTarget AS dimTargetSalesAmount
+    FROM StageTargetProduct
+	INNER JOIN dbo.dimProduct
+	ON dbo.StageTargetProduct.ProductID = dbo.dimProduct.dimSourceProductID
+	LEFT OUTER JOIN dbo.DimDate
+    ON dbo.StageTargetProduct.Year = dbo.DimDate.CalendarYear;
 END
 GO 
 
