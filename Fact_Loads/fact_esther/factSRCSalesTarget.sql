@@ -15,8 +15,8 @@ BEGIN
     dimResellerKey INT NOT NULL CONSTRAINT FK_factSRCSalesTarget_dimResellerKey FOREIGN KEY REFERENCES dbo.dimReseller (dimResellerKey),    
 	dimChannelID INT NOT NULL CONSTRAINT FK_factSRCSalesTarget_dimChannelID FOREIGN KEY REFERENCES dbo.dimChannel (dimChannelID),
 	-- dimSRCname nvarchar(255) NOT NULL,
-	dimTargetDateKey INT NOT NULL CONSTRAINT FK_factRSCSalesTarget_DimDateID FOREIGN KEY REFERENCES dbo.DimDate (dimDateID),
-	SalesTargetSalesAmount Numeric(16,6) NOT NULL,
+	DimDateID INT NOT NULL CONSTRAINT FK_factRSCSalesTarget_DimDateID FOREIGN KEY REFERENCES dbo.DimDate (DimDateID),
+	dimTargetSalesAmount DECIMAL(16,6) NOT NULL,
 	);
 END
 GO
@@ -33,25 +33,25 @@ BEGIN
 	,dimResellerKey
 	,dimChannelID
 	-- ,dimSRCname
-	,dimTargetDateKey
-	,SalesTargetSalesAmount
+	,DimDateID
+	,dimTargetSalesAmount
 	)
 
-	SELECT 
-	ISNULL(s.dimStoreKey,-1) 
-	,ISNULL(r.dimResellerKey,-1) 	
-	,ISNULL(c.dimChannelID, -1)
+	SELECT DISTINCT
+	ISNULL(dbo.dimStore.dimStoreKey,-1)  AS dimStoreKey
+	,ISNULL(dbo.dimReseller.dimResellerKey,-1) 	AS dimResellerKey
+	,dbo.dimChannel.dimChannelID
 	-- CRS.TargetName AS dimSRCname,
-	,DimDate.DimDateID as dimTargetDateKey
-	,CAST(CRS.TargetSalesAmount AS int)/365.0 as SalesTargetSalesAmount
-	FROM dbo.StageTargetCRS AS CRS
-	INNER join dbo.dimChannel c
-	on CRS.ChannelName = c.dimChannelName
-	left OUTER join dbo.dimStore s
-	on CRS.TargetName = s.dimStoreName
-	left OUTER join dbo.dimReseller r
-	on CRS.TargetName = r.dimResellerName
-	left OUTER join dbo.DimDate DimDate
-	on CRS.Year = DimDate.CalendarYear; 
+	,dbo.DimDate.DimDateID
+	,CONVERT(DECIMAL(16,6), dbo.StageTargetCRS.[ TargetSalesAmount ]) AS measureChannelTarget
+	FROM StageTargetCRS
+	INNER join dimChannel
+	on dbo.StageTargetCRS.ChannelName = dbo.dimChannel.dimChannelName
+	left OUTER join dimStore
+	on dbo.StageTargetCRS.TargetName = dbo.dimStore.dimStoreName
+	left OUTER join dbo.dimReseller
+	on dbo.StageTargetCRS.TargetName = dbo.dimReseller.dimResellerName
+	left OUTER join DimDate
+	on dbo.StageTargetCRS.Year = dbo.DimDate.CalendarYear; 
 END
 GO 

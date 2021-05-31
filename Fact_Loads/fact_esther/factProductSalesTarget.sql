@@ -31,9 +31,10 @@ BEGIN
     ,DimDateID
     ,dimTargetSalesAmount
 	)
-	SELECT dbo.dimProduct.dimProductID
+	SELECT DISTINCT
+	dbo.dimProduct.dimProductID
     ,dbo.DimDate.DimDateID
-    ,dbo.StageTargetProduct.SalesQuantityTarget AS dimTargetSalesAmount
+    ,dbo.StageTargetProduct.[SalesQuantityTarget]
     FROM StageTargetProduct
 	INNER JOIN dbo.dimProduct
 	ON dbo.StageTargetProduct.ProductID = dbo.dimProduct.dimSourceProductID
