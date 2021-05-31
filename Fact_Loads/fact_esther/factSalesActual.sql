@@ -19,8 +19,8 @@ BEGIN
     -- dimLocationKey INT NOT NULL CONSTRAINT FK_factSalesActual_dimLocation FOREIGN KEY REFERENCES dbo.dimLocation (dimLocationKey),
     -- dimSourceSalesHeaderID INT NOT NULL, --Natural Key
     -- dimSourceSalesDetailID INT NOT NULL, --Natural Key
-    dimSalesQuantity INT NOT NULL,
-    dimSalesAmount numeric(18,2) NOT NULL,
+    factSaleQuantity INT NOT NULL,
+    factSaleAmount numeric(18,2) NOT NULL,
     DimDateID INT NOT NULL CONSTRAINT FK_factSalesActual_DimDate FOREIGN KEY REFERENCES dbo.DimDate (DimDateID)
     -- dimSalesUnitPrice Decimal(18,2) NOT NULL,
     -- dimSalesExtendedCost Numeric(16,6) NOT NULL,
@@ -29,9 +29,9 @@ BEGIN
 END
 GO
 
-IF EXISTS (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'factSales')
+IF EXISTS (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'factSalesActual')
 BEGIN
-	INSERT INTO dbo.factSales
+	INSERT INTO dbo.factSalesActual
 	(
 		dimProductID
 		,dimChannelID
@@ -55,17 +55,17 @@ BEGIN
 	LEFT JOIN StageSalesDetail ON
 	dbo.StageSalesDetail.SalesHeaderID = dbo.StageSalesHeader.SalesHeaderID
 	LEFT JOIN dimProduct ON
-	dbo.dimProduct.dimProductID = dbo.StageSalesDetail.ProductID 
+	dbo.dimProduct.dimSourceProductID = dbo.StageSalesDetail.ProductID 
 	LEFT JOIN dimChannel ON
-	dbo.dimChannel.dimChannelID = dbo.StageSalesHeader.ChannelID
+	dbo.dimChannel.dimSourceChannelID = dbo.StageSalesHeader.ChannelID
 	LEFT JOIN dimReseller ON
 	dbo.dimReseller.dimSourceResellerID = dbo.StageSalesHeader.ResellerID
 	LEFT JOIN dimCustomer ON
 	dbo.dimCustomer.dimSourceCustomerID = dbo.StageSalesHeader.CustomerID
 	LEFT JOIN dimStore ON
 	dbo.dimStore.dimSourceStoreID = dbo.StageSalesHeader.StoreID
-	LEFT JOIN dimDate ON
-	dbo.dimDate.FullDate = dbo.StageSalesHeader.Date
+	LEFT JOIN DimDate ON
+	dbo.DimDate.FullDate = dbo.StageSalesHeader.Date
 END
 GO 
 

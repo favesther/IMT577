@@ -12,7 +12,7 @@ BEGIN
 	(
 	dimfactProductSalesTargetKey INT IDENTITY(1,1) CONSTRAINT PK_factProductSalesTarget PRIMARY KEY CLUSTERED NOT NULL, -- SurrogateKey
     dimProductID INT NOT NULL CONSTRAINT FK_factProductSalesTarget_dimProduct FOREIGN KEY REFERENCES dbo.dimProduct (dimProductID),
-    DimDateID INT NOT NULL CONSTRAINT FK_factProductSalesTarget_DimDate FOREIGN KEY REFERENCES dbo.DimDate (DimDateID),
+    -- DimDateID INT NOT NULL CONSTRAINT FK_factProductSalesTarget_DimDate FOREIGN KEY REFERENCES dbo.DimDate (DimDateID),
     dimTargetSalesAmount INT NOT NULL,
 	);
 END
@@ -34,7 +34,7 @@ BEGIN
 	SELECT DISTINCT
 	dbo.dimProduct.dimProductID
     ,dbo.DimDate.DimDateID
-    ,dbo.StageTargetProduct.[SalesQuantityTarget]
+    ,dbo.StageTargetProduct.SalesQuantityTarget
     FROM StageTargetProduct
 	INNER JOIN dbo.dimProduct
 	ON dbo.StageTargetProduct.ProductID = dbo.dimProduct.dimSourceProductID
